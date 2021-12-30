@@ -15,12 +15,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button button = findViewById(R.id.button100);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), SingleUseRouteActivity.class);
-                startActivity(i);
-            }
+        button.setOnClickListener(view -> {
+            Intent i = new Intent(view.getContext(), SingleUseRouteActivity.class);
+            startActivity(i);
+        });
+
+        Button button1 = findViewById(R.id.button200);
+        button1.setOnClickListener(view -> {
+            Intent ii = new Intent(view.getContext(), SaveRouteActivity.class);
+            startActivity(ii);
         });
     }
 }

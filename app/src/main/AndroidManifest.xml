@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClewApplication">
         <activity
+            android:name=".SaveRouteActivity"
+            android:exported="false" />
+        <activity
             android:name=".SingleUseRouteActivity"
             android:exported="false" />
         <activity

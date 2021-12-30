@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +23,12 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(view -> {
             Intent ii = new Intent(view.getContext(), SaveRouteActivity.class);
             startActivity(ii);
+        });
+
+        Button button2 = findViewById(R.id.button300);
+        button2.setOnClickListener(view -> {
+            Intent iii = new Intent(view.getContext(), SavedRoutesListActivity.class);
+            startActivity(iii);
         });
     }
 }

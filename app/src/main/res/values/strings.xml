@@ -2,4 +2,5 @@
     <string name="app_name">Clew Application</string>
     <string name="single_use_route">Single Use Route</string>
     <string name="save_route">Save Route</string>
+    <string name="saved_routes_list">Saved Routes List</string>
 </resources>

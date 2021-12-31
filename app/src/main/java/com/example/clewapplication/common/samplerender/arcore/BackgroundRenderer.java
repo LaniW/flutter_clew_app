@@ -20,12 +20,12 @@ import android.opengl.GLES30;
 
 import com.google.ar.core.Coordinates2d;
 import com.google.ar.core.Frame;
-import com.google.ar.core.examples.java.common.samplerender.Framebuffer;
-import com.google.ar.core.examples.java.common.samplerender.Mesh;
-import com.google.ar.core.examples.java.common.samplerender.SampleRender;
-import com.google.ar.core.examples.java.common.samplerender.Shader;
-import com.google.ar.core.examples.java.common.samplerender.Texture;
-import com.google.ar.core.examples.java.common.samplerender.VertexBuffer;
+import com.example.clewapplication.common.samplerender.Framebuffer;
+import com.example.clewapplication.common.samplerender.Mesh;
+import com.example.clewapplication.common.samplerender.SampleRender;
+import com.example.clewapplication.common.samplerender.Shader;
+import com.example.clewapplication.common.samplerender.Texture;
+import com.example.clewapplication.common.samplerender.VertexBuffer;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

@@ -23,12 +23,12 @@ import android.util.Log;
 
 import com.google.ar.core.ArImage;
 import com.google.ar.core.ImageFormat;
-import com.google.ar.core.examples.java.common.samplerender.GLError;
-import com.google.ar.core.examples.java.common.samplerender.Mesh;
-import com.google.ar.core.examples.java.common.samplerender.SampleRender;
-import com.google.ar.core.examples.java.common.samplerender.Shader;
-import com.google.ar.core.examples.java.common.samplerender.Texture;
-import com.google.ar.core.examples.java.common.samplerender.VertexBuffer;
+import com.example.clewapplication.common.samplerender.GLError;
+import com.example.clewapplication.common.samplerender.Mesh;
+import com.example.clewapplication.common.samplerender.SampleRender;
+import com.example.clewapplication.common.samplerender.Shader;
+import com.example.clewapplication.common.samplerender.Texture;
+import com.example.clewapplication.common.samplerender.VertexBuffer;
 
 import java.io.Closeable;
 import java.io.IOException;

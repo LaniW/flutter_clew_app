@@ -87,9 +87,9 @@ import java.util.List;
  * ARCore API. The application will display any detected planes and will allow the user to tap on a
  * plane to place a 3D model.
  */
-public class HelloArActivity extends AppCompatActivity implements SampleRender.Renderer {
+public class SaveRouteActivity extends AppCompatActivity implements SampleRender.Renderer {
 
-    private static final String TAG = HelloArActivity.class.getSimpleName();
+    private static final String TAG = SaveRouteActivity.class.getSimpleName();
 
     private static final String SEARCHING_PLANE_MESSAGE = "Searching for surfaces...";
     private static final String WAITING_FOR_TAP_MESSAGE = "Tap on a surface to place an object.";
@@ -176,7 +176,7 @@ public class HelloArActivity extends AppCompatActivity implements SampleRender.R
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_save_route);
         surfaceView = findViewById(R.id.surfaceview);
         displayRotationHelper = new DisplayRotationHelper(/*context=*/ this);
 
@@ -196,8 +196,8 @@ public class HelloArActivity extends AppCompatActivity implements SampleRender.R
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        PopupMenu popup = new PopupMenu(HelloArActivity.this, v);
-                        popup.setOnMenuItemClickListener(HelloArActivity.this::settingsMenuClick);
+                        PopupMenu popup = new PopupMenu(SaveRouteActivity.this, v);
+                        popup.setOnMenuItemClickListener(SaveRouteActivity.this::settingsMenuClick);
                         popup.inflate(R.menu.settings_menu);
                         popup.show();
                     }
@@ -817,5 +817,29 @@ public class HelloArActivity extends AppCompatActivity implements SampleRender.R
             config.setInstantPlacementMode(InstantPlacementMode.DISABLED);
         }
         session.configure(config);
+
     }
 }
+
+/**
+ * Associates an Anchor with the trackable it was attached to. This is used to be able to check
+ * whether or not an Anchor originally was attached to an {@link InstantPlacementPoint}.
+ */
+class WrappedAnchor {
+    private Anchor anchor;
+    private Trackable trackable;
+
+    public WrappedAnchor(Anchor anchor, Trackable trackable) {
+        this.anchor = anchor;
+        this.trackable = trackable;
+    }
+
+    public Anchor getAnchor() {
+        return anchor;
+    }
+
+    public Trackable getTrackable() {
+        return trackable;
+    }
+}
+

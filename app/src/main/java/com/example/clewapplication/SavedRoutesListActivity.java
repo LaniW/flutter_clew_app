@@ -9,6 +9,6 @@ public class SavedRoutesListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saved_routes);
+        setContentView(R.layout.activity_saved_routes_list);
     }
 }

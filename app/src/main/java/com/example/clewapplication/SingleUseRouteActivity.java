@@ -66,6 +66,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 public class SingleUseRouteActivity extends AppCompatActivity implements SampleRender.Renderer {
 
     private static final String TAG = SingleUseRouteActivity.class.getSimpleName();
@@ -458,6 +459,16 @@ public class SingleUseRouteActivity extends AppCompatActivity implements SampleR
         }
         // BackgroundRenderer.updateDisplayGeometry must be called every frame to update the coordinates
         // used to draw the background camera image.
+
+
+
+        //Lani
+        Log.e(TAG, "Lani says: " + frame.getCamera().getPose().extractTranslation().tx());
+
+        leaveAnchor(frame, camera);
+
+
+
         backgroundRenderer.updateDisplayGeometry(frame);
 
         if (camera.getTrackingState() == TrackingState.TRACKING
@@ -567,6 +578,63 @@ public class SingleUseRouteActivity extends AppCompatActivity implements SampleR
 
         // Compose the virtual scene with the background.
         backgroundRenderer.drawVirtualScene(render, virtualSceneFramebuffer, Z_NEAR, Z_FAR);
+    }
+
+    // Handle only one tap per frame, as taps are usually low frequency compared to frame rate.
+    private void leaveAnchor(Frame frame, Camera camera) {
+
+        /*
+        camera.getPose() <- position of the person in the instant
+        Trackable = camera.getPose()
+        Anchor = trackable
+
+        frame.getTimestamp()
+         */
+
+        float x = frame.getCamera().getPose().extractTranslation().tx();
+        float y = frame.getCamera().getPose().extractTranslation().ty();
+        float z = frame.getCamera().getPose().extractTranslation().tz();
+
+        List<HitResult> hitResultList;
+        hitResultList =
+                frame.hitTestInstantPlacement(x, y, APPROXIMATE_DISTANCE_METERS);
+
+
+            for (HitResult hit : hitResultList) {
+                // If any plane, Oriented Point, or Instant Placement Point was hit, create an anchor.
+                Trackable trackable = hit.getTrackable();
+                // If a plane was hit, check that it was hit inside the plane polygon.
+                // DepthPoints are only returned if Config.DepthMode is set to AUTOMATIC.
+                if ((trackable instanceof Plane
+                        && ((Plane) trackable).isPoseInPolygon(hit.getHitPose())
+                        && (PlaneRenderer.calculateDistanceToPlane(hit.getHitPose(), camera.getPose()) > 0))
+                        || (trackable instanceof Point
+                        && ((Point) trackable).getOrientationMode()
+                        == OrientationMode.ESTIMATED_SURFACE_NORMAL)
+                        || (trackable instanceof InstantPlacementPoint)
+                        || (trackable instanceof DepthPoint)) {
+                    // Cap the number of objects created. This avoids overloading both the
+                    // rendering system and ARCore.
+                    if (anchors.size() >= 20) {
+                        anchors.get(0).detach();
+                        anchors.remove(0);
+                    }
+
+                    // Adding an Anchor tells ARCore that it should track this position in
+                    // space. This anchor is created on the Plane to place the 3D model
+                    // in the correct position relative both to the world and to the plane.
+                    anchors.add(hit.createAnchor());
+                    // For devices that support the Depth API, shows a dialog to suggest enabling
+                    // depth-based occlusion. This dialog needs to be spawned on the UI thread.
+                    this.runOnUiThread(this::showOcclusionDialogIfNeeded);
+
+                    // Hits are sorted by depth. Consider only closest hit on a plane, Oriented Point, or
+                    // Instant Placement Point.
+                    break;
+                }
+            }
+
+
     }
 
     // Handle only one tap per frame, as taps are usually low frequency compared to frame rate.

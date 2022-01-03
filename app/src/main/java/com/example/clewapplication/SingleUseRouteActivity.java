@@ -580,16 +580,24 @@ public class SingleUseRouteActivity extends AppCompatActivity implements SampleR
         backgroundRenderer.drawVirtualScene(render, virtualSceneFramebuffer, Z_NEAR, Z_FAR);
     }
 
-    // Handle only one tap per frame, as taps are usually low frequency compared to frame rate.
-    private void leaveAnchor(Frame frame, Camera camera) {
+    // TODO Should leave an anchor every couple seconds.
+    private void leaveAnchor(Frame frame, Camera camera){
 
         /*
-        camera.getPose() <- position of the person in the instant
-        Trackable = camera.getPose()
-        Anchor = trackable
+        if (this.anchorNode == null) {
 
-        frame.getTimestamp()
-         */
+            Session session = arFragment.getArSceneView().getSession();
+
+            float[] position = { 0, 0, -0.75 };       // 75 cm away from camera
+            float[] rotation = { 0, 0, 0, 1 };
+
+            Anchor anchor =  session.createAnchor(new Pose(position, rotation));
+
+            anchorNode = new AnchorNode(anchor);
+            anchorNode.setRenderable(yourModelRenderable);
+            anchorNode.setParent(arFragment.getArSceneView().getScene());
+        }
+        */
 
         float x = frame.getCamera().getPose().extractTranslation().tx();
         float y = frame.getCamera().getPose().extractTranslation().ty();

@@ -1,73 +1,23 @@
 package com.example.clewapplication;
 
-import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.media.Image;
-import android.opengl.GLES30;
-import android.opengl.GLSurfaceView;
-import android.opengl.Matrix;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.PopupMenu;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.ar.core.Anchor;
-import com.google.ar.core.ArCoreApk;
-import com.google.ar.core.Camera;
-import com.google.ar.core.Config;
-import com.google.ar.core.Config.InstantPlacementMode;
-import com.google.ar.core.DepthPoint;
-import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
-import com.google.ar.core.InstantPlacementPoint;
-import com.google.ar.core.LightEstimate;
 import com.google.ar.core.Plane;
-import com.google.ar.core.Point;
-import com.google.ar.core.Point.OrientationMode;
-import com.google.ar.core.PointCloud;
 import com.google.ar.core.Session;
-import com.google.ar.core.Trackable;
-import com.google.ar.core.TrackingFailureReason;
-import com.google.ar.core.TrackingState;
-import com.example.clewapplication.common.helpers.CameraPermissionHelper;
-import com.example.clewapplication.common.helpers.DepthSettings;
-import com.example.clewapplication.common.helpers.DisplayRotationHelper;
-import com.example.clewapplication.common.helpers.FullScreenHelper;
-import com.example.clewapplication.common.helpers.InstantPlacementSettings;
-import com.example.clewapplication.common.helpers.SnackbarHelper;
-import com.example.clewapplication.common.helpers.TapHelper;
-import com.example.clewapplication.common.helpers.TrackingStateHelper;
-import com.example.clewapplication.common.samplerender.Framebuffer;
-import com.example.clewapplication.common.samplerender.GLError;
-import com.example.clewapplication.common.samplerender.Mesh;
-import com.example.clewapplication.common.samplerender.SampleRender;
-import com.example.clewapplication.common.samplerender.Shader;
-import com.example.clewapplication.common.samplerender.Texture;
-import com.example.clewapplication.common.samplerender.VertexBuffer;
-import com.example.clewapplication.common.samplerender.arcore.BackgroundRenderer;
-import com.example.clewapplication.common.samplerender.arcore.PlaneRenderer;
-import com.example.clewapplication.common.samplerender.arcore.SpecularCubemapFilter;
-import com.google.ar.core.exceptions.CameraNotAvailableException;
-import com.google.ar.core.exceptions.NotYetAvailableException;
-import com.google.ar.core.exceptions.UnavailableApkTooOldException;
-import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
-import com.google.ar.core.exceptions.UnavailableDeviceNotCompatibleException;
-import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
-import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.ux.ArFragment;
+import com.google.ar.sceneform.ux.BaseArFragment;
+import com.google.ar.sceneform.ux.TransformableNode;
 
-
-public class SingleUseRouteActivity extends AppCompatActivity implements SampleRender.Renderer {
+public class SingleUseRouteActivity extends AppCompatActivity {
 
     private static final String TAG = SingleUseRouteActivity.class.getSimpleName();
 
@@ -588,7 +538,7 @@ public class SingleUseRouteActivity extends AppCompatActivity implements SampleR
 
             Session session = arFragment.getArSceneView().getSession();
 
-            float[] position = { 0, 0, -0.75 };       // 75 cm away from camera
+            float[] position = { 0, 0, 0 };       // 0 cm  (z coordinate) away from camera
             float[] rotation = { 0, 0, 0, 1 };
 
             Anchor anchor =  session.createAnchor(new Pose(position, rotation));

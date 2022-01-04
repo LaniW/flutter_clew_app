@@ -11,6 +11,7 @@ import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.core.Session;
+//Change the Gradle file for the below imports
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
@@ -21,58 +22,49 @@ public class SingleUseRouteActivity extends AppCompatActivity {
 
     private static final String TAG = SingleUseRouteActivity.class.getSimpleName();
 
-    private static final String SEARCHING_PLANE_MESSAGE = "Searching for surfaces...";
-    private static final String WAITING_FOR_TAP_MESSAGE = "Tap on surface to place an object";
-
-    private static final float[] sphericalHarmonicFactors = {
-            0.282095f,
-            -0.325735f,
-            0.325735f,
-            -0.325735f,
-            0.273137f,
-            -0.273137f,
-            0.078848f,
-            -0.273137f,
-            0.136569f,
-    };
-
-    private static final float Z_NEAR = 0.1f;
-    private static final float Z_FAR = 100f;
-
-    private static final int CUBEMAP_RESOLUTION = 16;
-    private static final int CUBEMAP_NUMBER_OF_IMPORTANCE_SAMPLES = 32;
-
-    // Rendering. The Renderers are created here, and initialized when the GL surface is created.
-    private GLSurfaceView surfaceView;
-
-    private boolean installRequested;
+    private ArFragment arFragment;
 
     private Session session;
-    private final SnackbarHelper messageSnackbarHelper = new SnackbarHelper();
-    private DisplayRotationHelper displayRotationHelper;
-    private final TrackingStateHelper trackingStateHelper = new TrackingStateHelper(this);
-    private TapHelper tapHelper;
-    private SampleRender render;
+    private ModelRenderable modelRenderable;
 
-    private PlaneRenderer planeRenderer;
-    private BackgroundRenderer backgroundRenderer;
-    private Framebuffer virtualSceneFramebuffer;
-    private boolean hasSetTextureNames = false;
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_single_use_route);
 
-    private final DepthSettings depthSettings = new DepthSettings();
-    private boolean[] depthSettingsMenuDialogCheckboxes = new boolean[2];
+        arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        setupModel();
+        setupPlane();
+    }
 
-    private final InstantPlacementSettings instantPlacementSettings = new InstantPlacementSettings();
-    private boolean[] instantPlacementSettingsMenuDialogCheckboxes = new boolean[1];
-    // Assumed distance from the device camera to the surface on which user will try to place objects.
-    // This value affects the apparent scale of objects while the tracking method of the
-    // Instant Placement point is SCREENSPACE_WITH_APPROXIMATE_DISTANCE.
-    // Values in the [0.2, 2.0] meter range are a good choice for most AR experiences. Use lower
-    // values for AR experiences where users are expected to place objects on surfaces close to the
-    // camera. Use larger values for experiences where the user will likely be standing and trying to
-    // place an object on the ground or floor in front of them.
-    private static final float APPROXIMATE_DISTANCE_METERS = 2.0f;
+    @Override
+    protected void onDestroy() {
+        if(session != null) {
+            Log.e(TAG, "Inside Session Destroyed");
+            session.close();
+            session=  null;
+        }
 
+        super.onDestroy();
+    }
+
+    private void setupModel() {
+        ModelRenderable.builder().setSource(this, R,raw.andy).build().thenAccept(renderable -> modelRenderable = renderable).exceptionally(throwable -> {
+            Toast.makeText(SaveRouteActivity.this, "Model can't be loaded", Toast.LENGTH_SHORT).show();
+                return null;
+        });
+    }
+
+    private void setUpPlane() {
+        arFragment.setOnTapArPlaneListener(new BaseArFragment.OnTapArPlaneListener() {
+            @Override
+            public void onTapPlane(HitResult hitResult, Plane plane, MotionEvent motionEvent) {
+                Anchor anchor = hitResult.createAnchor();
+                AnchorNode anchorNode = new AnchorNode(anchor);
+                anchorNode.setParent(arFragment)
+            }
+        })
+    }
     // Point Cloud
     private VertexBuffer pointCloudVertexBuffer;
     private Mesh pointCloudMesh;

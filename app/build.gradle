@@ -39,4 +39,7 @@ dependencies {
     // Obj - a simple Wavefront OBJ file loader
 // https://github.com/javagl/Obj
     implementation 'de.javagl:obj:0.2.1'
+    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.15.0'
 }
+
+apply plugin: 'com.google.ar.sceneform.plugin'

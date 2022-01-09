@@ -49,7 +49,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     }
 
     private void setupModel() {
-        ModelRenderable.builder().setSource(this, R.raw.andy).build().thenAccept(renderable -> modelRenderable = renderable).exceptionally(throwable -> {
+        ModelRenderable.builder().setSource(this, R.raw.marker).build().thenAccept(renderable -> modelRenderable = renderable).exceptionally(throwable -> {
             Toast.makeText(SingleUseRouteActivity.this, "Model can't be loaded", Toast.LENGTH_SHORT).show();
                 return null;
         });

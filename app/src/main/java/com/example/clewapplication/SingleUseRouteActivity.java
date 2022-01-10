@@ -27,6 +27,8 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     private Session session;
     private ModelRenderable modelRenderable;
 
+    //Add ARMode, Look through InstantPlacementPoint.TrackingMethod
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

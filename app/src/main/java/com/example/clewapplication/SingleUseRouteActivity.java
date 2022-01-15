@@ -23,6 +23,10 @@ import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class SingleUseRouteActivity extends AppCompatActivity {
 
     private static final String TAG = SingleUseRouteActivity.class.getSimpleName();
@@ -31,7 +35,6 @@ public class SingleUseRouteActivity extends AppCompatActivity {
 
     private Session session;
     private ModelRenderable modelRenderable;
-    private boolean placed = false;
 
     //Add ARMode, Look through InstantPlacementPoint.TrackingMethod
 
@@ -58,7 +61,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     }
 
     private void setupModel() {
-        ModelRenderable.builder().setSource(this, R.raw.andy).build().thenAccept(renderable -> modelRenderable = renderable).exceptionally(throwable -> {
+        ModelRenderable.builder().setSource(this, R.raw.sphere).build().thenAccept(renderable -> modelRenderable = renderable).exceptionally(throwable -> {
             Toast.makeText(SingleUseRouteActivity.this, "Model can't be loaded", Toast.LENGTH_SHORT).show();
                 return null;
         });
@@ -93,18 +96,17 @@ public class SingleUseRouteActivity extends AppCompatActivity {
         }
 
         //Making sure ARCore is tracking some feature points, makes the augmentation little stable.
-        if(frame.getCamera().getTrackingState()== TrackingState.TRACKING && !placed) {
+        if(frame.getCamera().getTrackingState()== TrackingState.TRACKING) {
 
-            Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, -0.3f));
+            Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
             Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pos);
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(arFragment.getArSceneView().getScene());
 
             // Create the arrow node and add it to the anchor.
             Node arrow = new Node();
-            arrow.setParent(anchorNode);
-            arrow.setRenderable(modelRenderable);
-            placed = true; //to place the arrow just once.
+                    arrow.setParent(anchorNode);
+                    arrow.setRenderable(modelRenderable);
         }
     }
 }

@@ -105,8 +105,15 @@ public class SingleUseRouteActivity extends AppCompatActivity {
 
             // Create the arrow node and add it to the anchor.
             Node arrow = new Node();
-                    arrow.setParent(anchorNode);
-                    arrow.setRenderable(modelRenderable);
+            arrow.setParent(anchorNode);
+            arrow.setRenderable(modelRenderable);
         }
     }
+
+    /*
+    get the create arrow node
+    run it somehow in the same method
+        or if not, in another
+    still somehow get it to run in onCreate
+     */
 }

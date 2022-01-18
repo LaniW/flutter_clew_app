@@ -35,6 +35,8 @@ public class SingleUseRouteActivity extends AppCompatActivity {
 
     private Session session;
     private ModelRenderable modelRenderable;
+    private boolean b = true;
+    private Node arrow1 = new Node();
 
     //Add ARMode, Look through InstantPlacementPoint.TrackingMethod
 
@@ -88,10 +90,6 @@ public class SingleUseRouteActivity extends AppCompatActivity {
 
     private void onUpdateFrame(FrameTime frameTime) {
 
-        // LW: previous location x=0, y =0, z= 0
-
-
-
         Frame frame = arFragment.getArSceneView().getArFrame();
 
         // If there is no frame, just return.
@@ -102,32 +100,24 @@ public class SingleUseRouteActivity extends AppCompatActivity {
         //Making sure ARCore is tracking some feature points, makes the augmentation little stable.
         if(frame.getCamera().getTrackingState()== TrackingState.TRACKING) {
 
-
-
             Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
-            Pose pos1 = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
             Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pos);
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-            // LW: Get pose
-            // LW: If distance of pose - previous pose > XX
+                // Create the arrow node and add it to the anchor.
+                Node arrow = new Node();
+                arrow.setParent(anchorNode);
 
+                double distanceValue = Math.sqrt((arrow.getWorldPosition().x - arrow1.getWorldPosition().x)*(arrow.getWorldPosition().x - arrow1.getWorldPosition().x) + (arrow.getWorldPosition().y - arrow1.getWorldPosition().y)*(arrow.getWorldPosition().y - arrow1.getWorldPosition().y) + (arrow.getWorldPosition().z - arrow1.getWorldPosition().z)*(arrow.getWorldPosition().z - arrow1.getWorldPosition().z));
+                System.out.println("DistanceValue: " + distanceValue);
 
-            // Create the arrow node and add it to the anchor.
-            Node arrow = new Node();
-            arrow.setParent(anchorNode);
-            arrow.setRenderable(modelRenderable);
-            System.out.println();
-            // Set previous pose = pose
+            if(b||distanceValue>=0.5){
+                arrow.setRenderable(modelRenderable);
+                arrow1 = arrow;
+                //System.out.println("Arrow: " + arrow.getWorldPosition()); [TESTING]
+                b = false;
+                }
         }
     }
-
-    /*
-    get the create arrow node
-    run it somehow in the same method
-        or if not, in another
-    still somehow get it to run in onCreate
-    ArrayList of Anchors
-     */
 }

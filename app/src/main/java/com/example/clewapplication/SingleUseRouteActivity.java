@@ -23,10 +23,6 @@ import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 public class SingleUseRouteActivity extends AppCompatActivity {
 
     private static final String TAG = SingleUseRouteActivity.class.getSimpleName();
@@ -36,7 +32,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     private Session session;
     private ModelRenderable modelRenderable;
     private boolean b = true;
-    private Node arrow1 = new Node();
+    private Node newCrumb = new Node();
 
     //Add ARMode, Look through InstantPlacementPoint.TrackingMethod
 
@@ -105,19 +101,20 @@ public class SingleUseRouteActivity extends AppCompatActivity {
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-                // Create the arrow node and add it to the anchor.
-                Node arrow = new Node();
-                arrow.setParent(anchorNode);
+            // Create the crumb node and add it to the anchor.
+            Node crumb = new Node();
+            crumb.setParent(anchorNode);
 
-                double distanceValue = Math.sqrt((arrow.getWorldPosition().x - arrow1.getWorldPosition().x)*(arrow.getWorldPosition().x - arrow1.getWorldPosition().x) + (arrow.getWorldPosition().y - arrow1.getWorldPosition().y)*(arrow.getWorldPosition().y - arrow1.getWorldPosition().y) + (arrow.getWorldPosition().z - arrow1.getWorldPosition().z)*(arrow.getWorldPosition().z - arrow1.getWorldPosition().z));
-                System.out.println("DistanceValue: " + distanceValue);
+            double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
+            String coordinate = "(" + crumb.getWorldPosition().x + "," + crumb.getWorldPosition().y + "," + crumb.getWorldPosition().z + ")";
+            //System.out.println("DistanceValue: " + distanceValue); [TESTING]
 
-            if(b||distanceValue>=0.5){
-                arrow.setRenderable(modelRenderable);
-                arrow1 = arrow;
-                //System.out.println("Arrow: " + arrow.getWorldPosition()); [TESTING]
+            if (b || distanceValue >= 0.5) {
+                crumb.setRenderable(modelRenderable);
+                newCrumb = crumb;
+                //System.out.println("Arrow: " + crumb.getWorldPosition()); [TESTING]
                 b = false;
-                }
+            }
         }
     }
 }

@@ -35,6 +35,8 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     private ModelRenderable modelRenderable;
     private boolean b = true;
     private Node newCrumb = new Node();
+    private Node fEndpoint = new Node();
+    private Node LEndpoint = new Node();
     private ArrayList<Node> coordinatesList = new ArrayList<Node>();
 
 
@@ -129,6 +131,9 @@ public class SingleUseRouteActivity extends AppCompatActivity {
                 for (Node n: coordinatesList)
                 {
                     System.out.print("COORDINATE:" + n.getWorldPosition());
+                    fEndpoint = coordinatesList.get(0);
+                    LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
+                    System.out.println("fEndpoint: " + fEndpoint.getWorldPosition() + "LEndpoint: " + LEndpoint.getWorldPosition());
                 }
                 b = false;
             }

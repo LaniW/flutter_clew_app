@@ -23,6 +23,8 @@ import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.util.ArrayList;
+
 public class SingleUseRouteActivity extends AppCompatActivity {
 
     private static final String TAG = SingleUseRouteActivity.class.getSimpleName();
@@ -106,13 +108,27 @@ public class SingleUseRouteActivity extends AppCompatActivity {
             crumb.setParent(anchorNode);
 
             double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
-            String coordinate = "(" + crumb.getWorldPosition().x + "," + crumb.getWorldPosition().y + "," + crumb.getWorldPosition().z + ")";
-            //System.out.println("DistanceValue: " + distanceValue); [TESTING]
+            ArrayList<Node> coordinatesList = new ArrayList<Node>();
+            //half a meter~
+            //render path
 
             if (b || distanceValue >= 0.5) {
                 crumb.setRenderable(modelRenderable);
                 newCrumb = crumb;
-                //System.out.println("Arrow: " + crumb.getWorldPosition()); [TESTING]
+                /*
+                    The following does this:
+                    ---
+                    adds crumb
+                    prints out size: 1
+                    prints out changing coordinate of crumb
+                    never adds new values
+                */
+                coordinatesList.add(crumb);
+                System.out.println("Size2:" + coordinatesList.size());
+                for (Node n: coordinatesList)
+                {
+                    System.out.println("COORDINATE1:" + n.getWorldPosition());
+                }
                 b = false;
             }
         }

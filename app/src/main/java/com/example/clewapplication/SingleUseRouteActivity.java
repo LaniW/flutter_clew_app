@@ -35,6 +35,8 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     private ModelRenderable modelRenderable;
     private boolean b = true;
     private Node newCrumb = new Node();
+    private ArrayList<Node> coordinatesList = new ArrayList<Node>();
+
 
     //Add ARMode, Look through InstantPlacementPoint.TrackingMethod
 
@@ -108,7 +110,6 @@ public class SingleUseRouteActivity extends AppCompatActivity {
             crumb.setParent(anchorNode);
 
             double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
-            ArrayList<Node> coordinatesList = new ArrayList<Node>();
             //half a meter~
             //render path
 
@@ -124,10 +125,10 @@ public class SingleUseRouteActivity extends AppCompatActivity {
                     never adds new values
                 */
                 coordinatesList.add(crumb);
-                System.out.println("Size2:" + coordinatesList.size());
+                System.out.println("Size:" + coordinatesList.size());
                 for (Node n: coordinatesList)
                 {
-                    System.out.println("COORDINATE1:" + n.getWorldPosition());
+                    System.out.print("COORDINATE:" + n.getWorldPosition());
                 }
                 b = false;
             }

@@ -37,10 +37,8 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     private Node newCrumb = new Node();
     private Node fEndpoint = new Node();
     private Node LEndpoint = new Node();
+    private Node waypoint = new Node();
     private ArrayList<Node> coordinatesList = new ArrayList<Node>();
-
-
-    //Add ARMode, Look through InstantPlacementPoint.TrackingMethod
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -94,12 +92,10 @@ public class SingleUseRouteActivity extends AppCompatActivity {
 
         Frame frame = arFragment.getArSceneView().getArFrame();
 
-        // If there is no frame, just return.
         if (frame == null) {
             return;
         }
 
-        //Making sure ARCore is tracking some feature points, makes the augmentation little stable.
         if(frame.getCamera().getTrackingState()== TrackingState.TRACKING) {
 
             Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
@@ -107,33 +103,30 @@ public class SingleUseRouteActivity extends AppCompatActivity {
             AnchorNode anchorNode = new AnchorNode(anchor);
             anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-            // Create the crumb node and add it to the anchor.
             Node crumb = new Node();
             crumb.setParent(anchorNode);
 
             double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
-            //half a meter~
+            //half a meter~ (in the x, y and z direction)
             //render path
 
             if (b || distanceValue >= 0.5) {
+                /*
+                if(b || last crumb || (x >= 0.5) || (y >= 0.5) || (z >= 0.5)){
+                    //render as sphere
+                }else{
+                    //render as cone
+                }
+                */
                 crumb.setRenderable(modelRenderable);
                 newCrumb = crumb;
-                /*
-                    The following does this:
-                    ---
-                    adds crumb
-                    prints out size: 1
-                    prints out changing coordinate of crumb
-                    never adds new values
-                */
+
                 coordinatesList.add(crumb);
-                System.out.println("Size:" + coordinatesList.size());
                 for (Node n: coordinatesList)
                 {
-                    System.out.println("COORDINATE:" + n.getWorldPosition());
+                    System.out.println("COORDINATE:" + n.getWorldPosition()); //TESTING
                     fEndpoint = coordinatesList.get(0);
                     LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
-                    System.out.println("fEndpoint: " + fEndpoint.getWorldPosition() + "LEndpoint: " + LEndpoint.getWorldPosition());
                 }
                 b = false;
             }

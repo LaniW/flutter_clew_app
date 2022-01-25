@@ -130,7 +130,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
                 System.out.println("Size:" + coordinatesList.size());
                 for (Node n: coordinatesList)
                 {
-                    System.out.print("COORDINATE:" + n.getWorldPosition());
+                    System.out.println("COORDINATE:" + n.getWorldPosition());
                     fEndpoint = coordinatesList.get(0);
                     LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
                     System.out.println("fEndpoint: " + fEndpoint.getWorldPosition() + "LEndpoint: " + LEndpoint.getWorldPosition());

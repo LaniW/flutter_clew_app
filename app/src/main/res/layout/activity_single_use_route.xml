@@ -6,10 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".SingleUseRouteActivity">
 
-<fragment
-    android:id="@+id/fragment"
-    android:name="com.google.ar.sceneform.ux.ArFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.google.ar.sceneform.ux.ArFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="240dp"
+        android:layout_marginBottom="37dp"
+        android:width="150dp"
+        android:height="60dp"
+        android:text="@string/start"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="37dp"
+        android:width="150dp"
+        android:height="60dp"
+        android:text="@string/stop"
+        android:textSize="20sp" />
 
 </RelativeLayout>

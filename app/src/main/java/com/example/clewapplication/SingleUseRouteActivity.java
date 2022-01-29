@@ -3,6 +3,7 @@ package com.example.clewapplication;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     private Session session;
     private ModelRenderable modelRenderable;
     private boolean b = true;
+    private boolean buttonStart;
     private Node newCrumb = new Node();
     private Node fEndpoint = new Node();
     private Node LEndpoint = new Node();
@@ -49,6 +51,16 @@ public class SingleUseRouteActivity extends AppCompatActivity {
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
         setupModel();
         setUpPlane();
+    /*
+        final Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                if(){
+
+                }
+            }
+        })
+      */
     }
 
     @Override
@@ -96,7 +108,8 @@ public class SingleUseRouteActivity extends AppCompatActivity {
             return;
         }
 
-        if(frame.getCamera().getTrackingState()== TrackingState.TRACKING) {
+        //and && button clicked
+        if((frame.getCamera().getTrackingState() == TrackingState.TRACKING)) {
 
             Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
             Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pos);

@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_settings"
+        <item
+            android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
-            android:title="Settings"/>
-        <item android:id="@+id/nav_tutorial"
+            android:title="Settings" />
+        <item
+            android:id="@+id/nav_tutorial"
             android:icon="@drawable/ic_tutorial"
-            android:title="Tutorial"/>
-        <item android:id="@+id/nav_siri_shortcuts"
+            android:title="Tutorial" />
+        <item
+            android:id="@+id/nav_siri_shortcuts"
             android:icon="@drawable/ic_siri_shortcuts"
-            android:title="Siri Shortcuts"/>
-        <item android:id="@+id/nav_contact_us"
+            android:title="Siri Shortcuts" />
+        <item
+            android:id="@+id/nav_contact_us"
             android:icon="@drawable/ic_contact_us"
-            android:title="Contact Us"/>
+            android:title="Contact Us" />
     </group>
 
 </menu>

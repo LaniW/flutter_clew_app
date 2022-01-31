@@ -22,18 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ClewApplication">
         <activity
-            android:name=".ContactUsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SiriShortcutsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".TutorialActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SettingsActivity"
-            android:exported="false" />
-        <activity
             android:name=".SavedRoutesListActivity"
             android:exported="false" />
         <activity

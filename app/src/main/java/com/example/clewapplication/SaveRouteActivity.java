@@ -3,6 +3,7 @@ package com.example.clewapplication;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,8 @@ public class SaveRouteActivity extends AppCompatActivity {
     private Session session;
     private ModelRenderable modelRenderable;
     private boolean b = true;
+    private boolean buttonStart = false;
+    private boolean bPath = true;
     private Node newCrumb = new Node();
     private Node fEndpoint = new Node();
     private Node LEndpoint = new Node();
@@ -96,20 +99,32 @@ public class SaveRouteActivity extends AppCompatActivity {
             return;
         }
 
-        if(frame.getCamera().getTrackingState()== TrackingState.TRACKING) {
+        //and && button clicked
+        if((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
+            path(bPath);
+        }
+        else{
+            bPath = false;
+        }
+    }
 
-            Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
-            Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pos);
-            AnchorNode anchorNode = new AnchorNode(anchor);
-            anchorNode.setParent(arFragment.getArSceneView().getScene());
+    public void path(Boolean bPath){
 
-            Node crumb = new Node();
-            crumb.setParent(anchorNode);
+        Frame frame = arFragment.getArSceneView().getArFrame();
 
-            double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
-            //half a meter~ (in the x, y and z direction)
-            //render path
+        Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
+        Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pos);
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        anchorNode.setParent(arFragment.getArSceneView().getScene());
 
+        Node crumb = new Node();
+        crumb.setParent(anchorNode);
+
+        double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
+        //half a meter~ (in the x, y and z direction)
+        //render path
+
+        if(bPath){
             if (b || distanceValue >= 0.5) {
                 /*
                 if(b || last crumb || (x >= 0.5) || (y >= 0.5) || (z >= 0.5)){
@@ -131,5 +146,15 @@ public class SaveRouteActivity extends AppCompatActivity {
                 b = false;
             }
         }
+    }
+
+    public void setTrue(View view) {
+        buttonStart = true;
+        bPath = true;
+    }
+
+    public void setFalse(View view) {
+        buttonStart = false;
+        bPath = false;
     }
 }

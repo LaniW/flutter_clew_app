@@ -108,7 +108,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
         }
     }
 
-    public void path(Boolean bPath){
+    public void path(boolean bPath){
 
         Frame frame = arFragment.getArSceneView().getArFrame();
 

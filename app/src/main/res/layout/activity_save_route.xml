@@ -26,7 +26,7 @@
         android:layout_height="match_parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonStart2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -39,10 +39,11 @@
         android:height="60dp"
         android:text="@string/start"
         android:textSize="20sp"
-        tools:ignore="TextContrastCheck" />
+        tools:ignore="TextContrastCheck"
+        android:onClick="setTrue"/>
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/buttonStop2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -52,12 +53,13 @@
         android:width="150dp"
         android:height="60dp"
         android:text="@string/stop"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:onClick="setFalse"/>
 
     <android.opengl.GLSurfaceView
         android:id="@+id/surfaceview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="top"/>
+        android:layout_gravity="top" />
 
 </RelativeLayout>

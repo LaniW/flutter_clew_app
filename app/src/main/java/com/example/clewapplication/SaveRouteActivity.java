@@ -108,7 +108,7 @@ public class SaveRouteActivity extends AppCompatActivity {
         }
     }
 
-    public void path(Boolean bPath){
+    public void path(boolean bPath){
 
         Frame frame = arFragment.getArSceneView().getArFrame();
 
@@ -148,12 +148,12 @@ public class SaveRouteActivity extends AppCompatActivity {
         }
     }
 
-    public void setTrue(View view) {
+    public void setTrue1(View view) {
         buttonStart = true;
         bPath = true;
     }
 
-    public void setFalse(View view) {
+    public void setFalse1(View view) {
         buttonStart = false;
         bPath = false;
     }

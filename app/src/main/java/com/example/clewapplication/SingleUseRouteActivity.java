@@ -35,7 +35,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     private Session session;
     private ModelRenderable modelRenderable;
     private boolean b = true;
-    private boolean buttonStart;
+    private boolean buttonStart = false;
     private Node newCrumb = new Node();
     private Node fEndpoint = new Node();
     private Node LEndpoint = new Node();
@@ -109,21 +109,28 @@ public class SingleUseRouteActivity extends AppCompatActivity {
         }
 
         //and && button clicked
-        if((frame.getCamera().getTrackingState() == TrackingState.TRACKING)) {
+        if((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
+            path();
+        }
+    }
 
-            Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
-            Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pos);
-            AnchorNode anchorNode = new AnchorNode(anchor);
-            anchorNode.setParent(arFragment.getArSceneView().getScene());
+    public void path(){
 
-            Node crumb = new Node();
-            crumb.setParent(anchorNode);
+        Frame frame = arFragment.getArSceneView().getArFrame();
 
-            double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
-            //half a meter~ (in the x, y and z direction)
-            //render path
+        Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
+        Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pos);
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-            if (b || distanceValue >= 0.5) {
+        Node crumb = new Node();
+        crumb.setParent(anchorNode);
+
+        double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
+        //half a meter~ (in the x, y and z direction)
+        //render path
+
+        if (b || distanceValue >= 0.5) {
                 /*
                 if(b || last crumb || (x >= 0.5) || (y >= 0.5) || (z >= 0.5)){
                     //render as sphere
@@ -131,18 +138,21 @@ public class SingleUseRouteActivity extends AppCompatActivity {
                     //render as cone
                 }
                 */
-                crumb.setRenderable(modelRenderable);
-                newCrumb = crumb;
+            crumb.setRenderable(modelRenderable);
+            newCrumb = crumb;
 
-                coordinatesList.add(crumb);
-                for (Node n: coordinatesList)
-                {
-                    System.out.println("COORDINATE:" + n.getWorldPosition()); //TESTING
-                    fEndpoint = coordinatesList.get(0);
-                    LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
-                }
-                b = false;
+            coordinatesList.add(crumb);
+            for (Node n: coordinatesList)
+            {
+                System.out.println("COORDINATE:" + n.getWorldPosition()); //TESTING
+                fEndpoint = coordinatesList.get(0);
+                LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
             }
+            b = false;
         }
+    }
+
+    public void setTrue(View view) {
+        buttonStart = true;
     }
 }

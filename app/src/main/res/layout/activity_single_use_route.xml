@@ -25,7 +25,8 @@
         android:width="150dp"
         android:height="60dp"
         android:text="@string/start"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:onClick="setTrue"/>
 
     <Button
         android:id="@+id/button3"

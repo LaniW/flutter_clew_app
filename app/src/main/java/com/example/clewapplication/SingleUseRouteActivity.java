@@ -36,6 +36,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     private ModelRenderable modelRenderable;
     private boolean b = true;
     private boolean buttonStart = false;
+    private boolean bPath = true;
     private Node newCrumb = new Node();
     private Node fEndpoint = new Node();
     private Node LEndpoint = new Node();
@@ -51,16 +52,6 @@ public class SingleUseRouteActivity extends AppCompatActivity {
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
         setupModel();
         setUpPlane();
-    /*
-        final Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                if(){
-
-                }
-            }
-        })
-      */
     }
 
     @Override
@@ -110,11 +101,14 @@ public class SingleUseRouteActivity extends AppCompatActivity {
 
         //and && button clicked
         if((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
-            path();
+            path(bPath);
+        }
+        else{
+            bPath = false;
         }
     }
 
-    public void path(){
+    public void path(Boolean bPath){
 
         Frame frame = arFragment.getArSceneView().getArFrame();
 
@@ -130,7 +124,8 @@ public class SingleUseRouteActivity extends AppCompatActivity {
         //half a meter~ (in the x, y and z direction)
         //render path
 
-        if (b || distanceValue >= 0.5) {
+        if(bPath){
+            if (b || distanceValue >= 0.5) {
                 /*
                 if(b || last crumb || (x >= 0.5) || (y >= 0.5) || (z >= 0.5)){
                     //render as sphere
@@ -138,21 +133,28 @@ public class SingleUseRouteActivity extends AppCompatActivity {
                     //render as cone
                 }
                 */
-            crumb.setRenderable(modelRenderable);
-            newCrumb = crumb;
+                crumb.setRenderable(modelRenderable);
+                newCrumb = crumb;
 
-            coordinatesList.add(crumb);
-            for (Node n: coordinatesList)
-            {
-                System.out.println("COORDINATE:" + n.getWorldPosition()); //TESTING
-                fEndpoint = coordinatesList.get(0);
-                LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
+                coordinatesList.add(crumb);
+                for (Node n: coordinatesList)
+                {
+                    System.out.println("COORDINATE:" + n.getWorldPosition()); //TESTING
+                    fEndpoint = coordinatesList.get(0);
+                    LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
+                }
+                b = false;
             }
-            b = false;
         }
     }
 
     public void setTrue(View view) {
         buttonStart = true;
+        bPath = true;
+    }
+
+    public void setFalse(View view) {
+        buttonStart = false;
+        bPath = false;
     }
 }

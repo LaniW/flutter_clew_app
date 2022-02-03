@@ -42,6 +42,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     private Node LEndpoint = new Node();
     private Node waypoint = new Node();
     private ArrayList<Node> coordinatesList = new ArrayList<Node>();
+    private ArrayList<Double> distancesToLineList = new ArrayList<Double>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState){

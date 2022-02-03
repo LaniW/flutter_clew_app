@@ -99,7 +99,6 @@ public class SingleUseRouteActivity extends AppCompatActivity {
             return;
         }
 
-        //and && button clicked
         if((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
             path(bPath);
         }
@@ -126,20 +125,13 @@ public class SingleUseRouteActivity extends AppCompatActivity {
 
         if(bPath){
             if (b || distanceValue >= 0.5) {
-                /*
-                if(b || last crumb || (x >= 0.5) || (y >= 0.5) || (z >= 0.5)){
-                    //render as sphere
-                }else{
-                    //render as cone
-                }
-                */
                 crumb.setRenderable(modelRenderable);
                 newCrumb = crumb;
 
                 coordinatesList.add(crumb);
                 for (Node n: coordinatesList)
                 {
-                    System.out.println("COORDINATE:" + n.getWorldPosition()); //TESTING
+                    //System.out.println("COORDINATE:" + n.getWorldPosition()); //TESTING
                     fEndpoint = coordinatesList.get(0);
                     LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
                 }

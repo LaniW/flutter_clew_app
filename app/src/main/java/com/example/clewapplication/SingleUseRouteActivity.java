@@ -45,7 +45,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     private ArrayList<Double> distancesToLineList = new ArrayList<Double>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_use_route);
 
@@ -57,10 +57,10 @@ public class SingleUseRouteActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(session != null) {
+        if (session != null) {
             Log.e(TAG, "Inside Session Destroyed");
             session.close();
-            session=  null;
+            session = null;
         }
 
         super.onDestroy();
@@ -69,7 +69,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     private void setupModel() {
         ModelRenderable.builder().setSource(this, R.raw.sphere2).build().thenAccept(renderable -> modelRenderable = renderable).exceptionally(throwable -> {
             Toast.makeText(SingleUseRouteActivity.this, "Model can't be loaded", Toast.LENGTH_SHORT).show();
-                return null;
+            return null;
         });
     }
 
@@ -85,7 +85,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
         });
     }
 
-    private void createModel(AnchorNode anchorNode){
+    private void createModel(AnchorNode anchorNode) {
         TransformableNode node = new TransformableNode((arFragment.getTransformationSystem()));
         node.setParent(anchorNode);
         node.setRenderable(modelRenderable);
@@ -100,15 +100,14 @@ public class SingleUseRouteActivity extends AppCompatActivity {
             return;
         }
 
-        if((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
+        if ((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
             path(bPath);
-        }
-        else{
+        } else {
             bPath = false;
         }
     }
 
-    public void path(boolean bPath){
+    public void path(boolean bPath) {
 
         Frame frame = arFragment.getArSceneView().getArFrame();
 
@@ -124,14 +123,13 @@ public class SingleUseRouteActivity extends AppCompatActivity {
         //half a meter~ (in the x, y and z direction)
         //render path
 
-        if(bPath){
+        if (bPath) {
             if (b || distanceValue >= 0.5) {
                 crumb.setRenderable(modelRenderable);
                 newCrumb = crumb;
 
                 coordinatesList.add(crumb);
-                for (Node n: coordinatesList)
-                {
+                for (Node n : coordinatesList) {
                     //System.out.println("COORDINATE:" + n.getWorldPosition()); //TESTING
                     fEndpoint = coordinatesList.get(0);
                     LEndpoint = coordinatesList.get(coordinatesList.size() - 1);

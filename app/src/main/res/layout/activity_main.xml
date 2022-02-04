@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:textSize="20sp"
     tools:openDrawer="start">
 
     <com.google.android.material.navigation.NavigationView
@@ -14,6 +15,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        app:itemVerticalPadding="20sp"
         app:menu="@menu/main_menu"
         app:itemTextAppearance="@style/NewFontSize" />
 
@@ -26,8 +28,8 @@
             android:id="@+id/button100"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:width="275dp"
-            android:height="75dp"
+            android:width="275sp"
+            android:height="75sp"
             android:text="@string/single_use_route"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -42,8 +44,8 @@
             android:id="@+id/button200"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:width="275dp"
-            android:height="75dp"
+            android:width="275sp"
+            android:height="75sp"
             android:text="@string/save_route"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -58,8 +60,8 @@
             android:id="@+id/button300"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:width="275dp"
-            android:height="75dp"
+            android:width="275sp"
+            android:height="75sp"
             android:text="@string/saved_routes_list"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"

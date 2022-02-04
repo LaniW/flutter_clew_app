@@ -15,7 +15,8 @@
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/drawable/ic_settings.xml" value="0.1" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/drawable/ic_siri_shortcuts.xml" value="0.1" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/drawable/ic_tutorial.xml" value="0.1" />
-        <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/drawable/side_nav_bar.xml" value="0.1" />
+        <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/activity_save_route.xml" value="0.24728260869565216" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/activity_saved_routes_list.xml" value="0.24728260869565216" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/activity_settings.xml" value="0.1109375" />
@@ -23,10 +24,12 @@
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/app_bar_main.xml" value="0.3625" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/contact_us.xml" value="0.25" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/nav_header.xml" value="0.2" />
+        <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/nav_header_main.xml" value="0.3625" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/settings.xml" value="0.25" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/siri_shortcuts.xml" value="0.25" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/tutorial.xml" value="0.25" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/menu/drawer_menu.xml" value="0.264" />
+        <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/menu/main_menu.xml" value="0.4" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/menu/menu_main.xml" value="0.25" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/menu/settings_menu.xml" value="0.3625" />
         <entry key="..\:/projects/OCCaM Lab/javaClewApp/app/src/main/res/layout/activity_save_route.xml" value="0.2617753623188406" />

@@ -14,7 +14,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/main_menu"/>
+        app:menu="@menu/main_menu"
+        app:itemTextAppearance="@style/NewFontSize" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

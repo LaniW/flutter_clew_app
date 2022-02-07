@@ -13,9 +13,9 @@
             android:icon="@drawable/ic_tutorial"
             android:title="@string/tutorial" />
         <item
-            android:id="@+id/nav_siri_shortcuts"
-            android:icon="@drawable/ic_siri_shortcuts"
-            android:title="@string/siri_shortcuts" />
+            android:id="@+id/nav_ga_shortcuts"
+            android:icon="@drawable/ic_ga_shortcuts"
+            android:title="@string/ga_shortcuts" />
         <item
             android:id="@+id/nav_contact_us"
             android:icon="@drawable/ic_contact_us"

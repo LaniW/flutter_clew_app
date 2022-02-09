@@ -1,4 +1,16 @@
 package com.example.clewapplication;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-public class ContactUsActivity {
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+public class ContactUsActivity extends Fragment {
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.contact_us_drawer,container,false);
+    }
 }

@@ -11,6 +11,7 @@
         <entry key="..\:/Users/laniw/StudioProjects/javaClewApp/app/src/main/res/layout/activity_single_use_route.xml" value="0.21467391304347827" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2365" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/drawable/ic_contact_us.xml" value="0.1" />
+        <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/drawable/ic_home.xml" value="0.1" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2365" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/drawable/ic_settings.xml" value="0.1" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/drawable/ic_siri_shortcuts.xml" value="0.1" />
@@ -26,9 +27,11 @@
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/contact_us_drawer.xml" value="0.2427536231884058" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/contact_us_layout.xml" value="0.2427536231884058" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/design_navigation_item.xml" value="0.3625" />
+        <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/frame_layout.xml" value="0.3625" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/ga_shortcuts_drawer.xml" value="0.2427536231884058" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/generic_fragment.xml" value="0.3625" />
+        <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/main_buttons.xml" value="0.25" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/my_drawer_layout.xml" value="0.3625" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/nav_header.xml" value="0.2" />
         <entry key="..\:/projects/OCCaM Lab/Android Clew Applications/javaClewApp/app/src/main/res/layout/nav_header_main.xml" value="0.3625" />

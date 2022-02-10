@@ -1,10 +1,8 @@
 package com.example.clewapplication;
 //reformat code Ctrl + Alt + L
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -35,26 +33,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_home);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
-        Button button = findViewById(R.id.button100);
-        button.setOnClickListener(view -> {
-            Intent i = new Intent(view.getContext(), SingleUseRouteActivity.class);
-            startActivity(i);
-        });
-
-        Button button1 = findViewById(R.id.button200);
-        button1.setOnClickListener(view -> {
-            Intent ii = new Intent(view.getContext(), SaveRouteActivity.class);
-            startActivity(ii);
-        });
-
-        Button button2 = findViewById(R.id.button300);
-        button2.setOnClickListener(view -> {
-            Intent iii = new Intent(view.getContext(), SavedRoutesListActivity.class);
-            startActivity(iii);
-        });
     }
 
     @Override
@@ -73,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        if (id == R.id.nav_settings) {
+        if (id == R.id.nav_home) {
+            fragment = new HomeFragment();
+        } else if (id == R.id.nav_settings) {
             fragment = new SettingsActivity();
         } else if (id == R.id.nav_tutorial) {
             fragment = new TutorialActivity();

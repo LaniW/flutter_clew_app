@@ -54,7 +54,7 @@ public class SingleUseRouteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_single_use_route);
+        setContentView(R.layout.fragment_home);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);

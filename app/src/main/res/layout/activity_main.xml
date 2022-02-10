@@ -14,59 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Button
-                android:id="@+id/button100"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="275sp"
-                android:height="75sp"
-                android:text="@string/single_use_route"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.273"
-                tools:ignore="TextContrastCheck" />
-
-            <Button
-                android:id="@+id/button200"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="275sp"
-                android:height="75sp"
-                android:text="@string/save_route"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button100"
-                app:layout_constraintVertical_bias="0.162"
-                tools:ignore="TextContrastCheck,TextContrastCheck" />
-
-            <Button
-                android:id="@+id/button300"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="275sp"
-                android:height="75sp"
-                android:text="@string/saved_routes_list"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button200"
-                app:layout_constraintVertical_bias="0.24"
-                tools:ignore="TextContrastCheck" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
     <com.google.android.material.navigation.NavigationView

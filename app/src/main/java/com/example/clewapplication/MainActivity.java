@@ -35,6 +35,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        HomeFragment fragment = new HomeFragment();
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 

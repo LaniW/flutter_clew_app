@@ -18,20 +18,21 @@ public class HomeFragment extends Fragment {
 
         Button button = rootView.findViewById(R.id.button100);
         button.setOnClickListener(view -> {
-            Intent i = new Intent(view.getContext(), SingleUseRouteActivity.class);
-            startActivity(i);
+            Intent i = new Intent(getActivity().getApplicationContext(), SingleUseRouteActivity.class);
+            getActivity().startActivity(i);
         });
 
         Button button1 = rootView.findViewById(R.id.button200);
         button1.setOnClickListener(view -> {
-            Intent ii = new Intent(view.getContext(), SaveRouteActivity.class);
-            startActivity(ii);
+            Intent ii = new Intent(getActivity().getApplicationContext(), SaveRouteActivity.class);
+            getActivity().startActivity(ii);
         });
+
 
         Button button2 = rootView.findViewById(R.id.button300);
         button2.setOnClickListener(view -> {
-            Intent iii = new Intent(view.getContext(), SavedRoutesListActivity.class);
-            startActivity(iii);
+            Intent iii = new Intent(getActivity().getApplicationContext(), SavedRoutesListActivity.class);
+            getActivity().startActivity(iii);
         });
 
         return inflater.inflate(R.layout.fragment_home,container,false);

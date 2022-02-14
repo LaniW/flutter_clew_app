@@ -6,10 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 public class HomeFragment extends Fragment {
+
 
     @Nullable
     @Override
@@ -27,7 +31,6 @@ public class HomeFragment extends Fragment {
             Intent ii = new Intent(getActivity().getApplicationContext(), SaveRouteActivity.class);
             getActivity().startActivity(ii);
         });
-
 
         Button button2 = rootView.findViewById(R.id.button300);
         button2.setOnClickListener(view -> {

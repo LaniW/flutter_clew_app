@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
@@ -28,7 +29,7 @@ import com.google.ar.sceneform.ux.TransformableNode;
 import java.util.ArrayList;
 
 
-public class SaveRouteActivity extends AppCompatActivity {
+public class SaveRouteActivity extends FragmentActivity {
 
 
     private static final String TAG = SaveRouteActivity.class.getSimpleName();

@@ -1,10 +1,11 @@
 package com.example.clewapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
 
-public class SavedRoutesListActivity extends AppCompatActivity {
+public class SavedRoutesListActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

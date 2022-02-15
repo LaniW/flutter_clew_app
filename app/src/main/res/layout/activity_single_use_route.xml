@@ -26,7 +26,10 @@
         android:height="60sp"
         android:text="@string/start"
         android:textSize="20sp"
-        android:onClick="setTrue"/>
+        android:onClick="setTrue"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/green_500"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/buttonStop"
@@ -40,6 +43,9 @@
         android:height="60sp"
         android:text="@string/stop"
         android:textSize="20sp"
-        android:onClick="setFalse"/>
+        android:onClick="setFalse"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/green_500"
+        tools:ignore="TextContrastCheck" />
 
 </RelativeLayout>

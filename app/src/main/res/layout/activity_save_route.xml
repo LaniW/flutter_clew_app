@@ -40,6 +40,8 @@
         android:onClick="setTrue"
         android:text="@string/start"
         android:textSize="20sp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/green_500"
         tools:ignore="TextContrastCheck" />
 
     <Button
@@ -54,7 +56,10 @@
         android:height="60sp"
         android:onClick="setFalse"
         android:text="@string/stop"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/green_500"
+        tools:ignore="TextContrastCheck" />
 
     <android.opengl.GLSurfaceView
         android:id="@+id/surfaceview"

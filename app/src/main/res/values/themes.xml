@@ -22,4 +22,8 @@
     <style name="TitleFontSize">
         <item name="android:textSize">30sp</item>
     </style>
+
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/green_500</item>
+    </style>
 </resources>

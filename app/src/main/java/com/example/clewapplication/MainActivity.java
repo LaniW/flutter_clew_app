@@ -80,4 +80,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void buttonClick(@NonNull View v) {
+        switch(v.getId()) {
+            case R.id.button100:
+                Intent myIntent = new Intent();
+                myIntent.setClassName("com.example.clewapplication", "com.example.clewapplication.SingleUseRouteActivity");
+                startActivity(myIntent);
+                break;
+            case R.id.button200:
+                Intent myIntent1 = new Intent();
+                myIntent1.setClassName("com.example.clewapplication", "com.example.clewapplication.SaveRouteActivity");
+                startActivity(myIntent1);
+                break;
+            case R.id.button300:
+                Intent myIntent2 = new Intent();
+                myIntent2.setClassName("com.example.clewapplication", "com.example.clewapplication.SavedRoutesListActivity");
+                startActivity(myIntent2);
+                break;
+        }
+    }
 }

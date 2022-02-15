@@ -37,10 +37,10 @@
         android:layout_marginBottom="37sp"
         android:width="150sp"
         android:height="60sp"
+        android:onClick="setTrue"
         android:text="@string/start"
         android:textSize="20sp"
-        tools:ignore="TextContrastCheck"
-        android:onClick="setTrue"/>
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/buttonStop2"
@@ -52,9 +52,9 @@
         android:layout_marginBottom="37sp"
         android:width="150sp"
         android:height="60sp"
+        android:onClick="setFalse"
         android:text="@string/stop"
-        android:textSize="20sp"
-        android:onClick="setFalse"/>
+        android:textSize="20sp" />
 
     <android.opengl.GLSurfaceView
         android:id="@+id/surfaceview"

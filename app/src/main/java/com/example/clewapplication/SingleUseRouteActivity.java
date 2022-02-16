@@ -45,13 +45,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
     private ArrayList<Node> coordinatesList = new ArrayList<Node>();
     private ArrayList<Double> distancesToLineList = new ArrayList<Double>();
 
-    /*
-        1. Get equation of the line between s(x1, y1, z1) and e(x2, y2, z2): (a,b,c) = t<x,y,z>
-            - Slope: Vector3(?)
-            - Start point: s(x1, y1, z1)
-        2. Get an ArrayList of the distances (double) between the line and the crumbs
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

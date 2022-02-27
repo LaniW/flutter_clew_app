@@ -6,7 +6,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.ar.core.Anchor;
@@ -15,7 +14,6 @@ import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
-//Change the Gradle file for the below imports
 import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
@@ -26,6 +24,8 @@ import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.ArrayList;
+
+//Change the Gradle file for the below imports
 
 public class SingleUseRouteActivity extends FragmentActivity {
 
@@ -44,6 +44,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
     private Node waypoint = new Node();
     private ArrayList<Node> coordinatesList = new ArrayList<Node>();
     private ArrayList<Double> distancesToLineList = new ArrayList<Double>();
+    //private LineArray lineArr=new LineArray(2,LineArray.COORDINATES);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -18,7 +18,7 @@ import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.Node;
-import com.google.ar.sceneform.NodeParent;
+import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
@@ -30,7 +30,6 @@ import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
 //Change the Gradle file for the below imports
 
@@ -159,33 +158,47 @@ public class SingleUseRouteActivity extends FragmentActivity {
     }
 
     //All edits in function are new:
-    public void lineBetweenPoints(Vector3 point1, Vector3 point2) {
-        Node lineNode = new Node();
+    private void addLineBetweenHits(HitResult hitResult, Plane plane, MotionEvent motionEvent) {
 
-   /* First, find the vector extending between the two points and define a look rotation in terms of this
-        Vector. */
+        int val = motionEvent.getActionMasked();
+        float axisVal = motionEvent.getAxisValue(MotionEvent.AXIS_X, motionEvent.getPointerId(motionEvent.getPointerCount() - 1));
+        Log.e("Values:", String.valueOf(val) + String.valueOf(axisVal));
+        Anchor anchor = hitResult.createAnchor();
+        AnchorNode anchorNode = new AnchorNode(anchor);
 
-        final Vector3 difference = Vector3.subtract(point1, point2);
-        final Vector3 directionFromTopToBottom = difference.normalized();
-        final Quaternion rotationFromAToB = Quaternion.lookRotation(directionFromTopToBottom, Vector3.up());
 
-   /* Then, create a rectangular prism, using ShapeFactory.makeCube() and use the difference vector
-         to extend to the necessary length.  */
+        if (lastAnchorNode != null) {
+            anchorNode.setParent(arFragment.getArSceneView().getScene());
+            Vector3 point1, point2;
+            point1 = lastAnchorNode.getWorldPosition();
+            point2 = anchorNode.getWorldPosition();
 
-        MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.WHITE))
-                .thenAccept(
-                        material -> {
-                            lineRenderable.set(ShapeFactory.makeCube(new Vector3(.01f, .01f, difference.length()),
-                                    Vector3.zero(), material));
-                        });
-
-   /* Last, set the local rotation of the node to the rotation calculated earlier and set the local position to
-       the midpoint between the given points . */
-
-        lineNode.setParent(anchorNode);
-        lineNode.setRenderable(lineRenderable);
-        lineNode.setLocalPosition(Vector3.add(point1, point2).scaled(.5f));
-        lineNode.setLocalRotation(rotationFromAToB);
-
+    /*
+        First, find the vector extending between the two points and define a look rotation
+        in terms of this Vector.
+    */
+            final Vector3 difference = Vector3.subtract(point1, point2);
+            final Vector3 directionFromTopToBottom = difference.normalized();
+            final Quaternion rotationFromAToB =
+                    Quaternion.lookRotation(directionFromTopToBottom, Vector3.up());
+            MaterialFactory.makeOpaqueWithColor(getApplicationContext(), new Color(0, 255, 244))
+                    .thenAccept(
+                            material -> {
+                            /* Then, create a rectangular prism, using ShapeFactory.makeCube() and use the difference vector
+                                   to extend to the necessary length.  */
+                                ModelRenderable model = ShapeFactory.makeCube(
+                                        new Vector3(.01f, .01f, difference.length()),
+                                        Vector3.zero(), material);
+                            /* Last, set the world rotation of the node to the rotation calculated earlier and set the world position to
+                                   the midpoint between the given points . */
+                                Node node = new Node();
+                                node.setParent(anchorNode);
+                                node.setRenderable(model);
+                                node.setWorldPosition(Vector3.add(point1, point2).scaled(.5f));
+                                node.setWorldRotation(rotationFromAToB);
+                            }
+                    );
+            lastAnchorNode = anchorNode;
+        }
     }
 }

@@ -18,12 +18,19 @@ import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.Node;
+import com.google.ar.sceneform.NodeParent;
+import com.google.ar.sceneform.math.Quaternion;
+import com.google.ar.sceneform.math.Vector3;
+import com.google.ar.sceneform.rendering.Color;
+import com.google.ar.sceneform.rendering.MaterialFactory;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 //Change the Gradle file for the below imports
 
@@ -149,5 +156,36 @@ public class SingleUseRouteActivity extends FragmentActivity {
     public void setFalse(View view) {
         buttonStart = false;
         bPath = false;
+    }
+
+    //All edits in function are new:
+    public void lineBetweenPoints(Vector3 point1, Vector3 point2) {
+        Node lineNode = new Node();
+
+   /* First, find the vector extending between the two points and define a look rotation in terms of this
+        Vector. */
+
+        final Vector3 difference = Vector3.subtract(point1, point2);
+        final Vector3 directionFromTopToBottom = difference.normalized();
+        final Quaternion rotationFromAToB = Quaternion.lookRotation(directionFromTopToBottom, Vector3.up());
+
+   /* Then, create a rectangular prism, using ShapeFactory.makeCube() and use the difference vector
+         to extend to the necessary length.  */
+
+        MaterialFactory.makeOpaqueWithColor(this, new Color(android.graphics.Color.WHITE))
+                .thenAccept(
+                        material -> {
+                            lineRenderable.set(ShapeFactory.makeCube(new Vector3(.01f, .01f, difference.length()),
+                                    Vector3.zero(), material));
+                        });
+
+   /* Last, set the local rotation of the node to the rotation calculated earlier and set the local position to
+       the midpoint between the given points . */
+
+        lineNode.setParent(anchorNode);
+        lineNode.setRenderable(lineRenderable);
+        lineNode.setLocalPosition(Vector3.add(point1, point2).scaled(.5f));
+        lineNode.setLocalRotation(rotationFromAToB);
+
     }
 }

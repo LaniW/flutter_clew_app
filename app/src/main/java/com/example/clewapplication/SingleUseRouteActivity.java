@@ -110,6 +110,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
 
         if ((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
             path(bPath);
+            addLineBetweenHits(fEndpoint, LEndpoint);
         } else {
             bPath = false;
         }
@@ -139,6 +140,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
                 coordinatesList.add(crumb);
                 for (Node n : coordinatesList) {
                     //System.out.println("COORDINATE:" + n.getWorldPosition()); //TESTING
+                    //endpoints are nodes
                     fEndpoint = coordinatesList.get(0);
                     LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
                 }
@@ -158,21 +160,11 @@ public class SingleUseRouteActivity extends FragmentActivity {
     }
 
     //All edits in function are new:
-    private void addLineBetweenHits(HitResult hitResult, Plane plane, MotionEvent motionEvent) {
+    public void addLineBetweenHits(Node aCrumb, Node bCrumb) {
 
-        int val = motionEvent.getActionMasked();
-        float axisVal = motionEvent.getAxisValue(MotionEvent.AXIS_X, motionEvent.getPointerId(motionEvent.getPointerCount() - 1));
-        Log.e("Values:", String.valueOf(val) + String.valueOf(axisVal));
-        Anchor anchor = hitResult.createAnchor();
-        AnchorNode anchorNode = new AnchorNode(anchor);
-
-
-        if (lastAnchorNode != null) {
-            anchorNode.setParent(arFragment.getArSceneView().getScene());
             Vector3 point1, point2;
-            point1 = lastAnchorNode.getWorldPosition();
-            point2 = anchorNode.getWorldPosition();
-
+            point1 = aCrumb.getWorldPosition();
+            point2 = bCrumb.getWorldPosition();
     /*
         First, find the vector extending between the two points and define a look rotation
         in terms of this Vector.
@@ -191,14 +183,13 @@ public class SingleUseRouteActivity extends FragmentActivity {
                                         Vector3.zero(), material);
                             /* Last, set the world rotation of the node to the rotation calculated earlier and set the world position to
                                    the midpoint between the given points . */
-                                Node node = new Node();
-                                node.setParent(anchorNode);
-                                node.setRenderable(model);
-                                node.setWorldPosition(Vector3.add(point1, point2).scaled(.5f));
-                                node.setWorldRotation(rotationFromAToB);
+                                Node node1 = new Node();
+                                node1.setParent(bCrumb);
+                                node1.setRenderable(model);
+                                node1.setWorldPosition(Vector3.add(point1, point2).scaled(.5f));
+                                node1.setWorldRotation(rotationFromAToB);
                             }
                     );
-            lastAnchorNode = anchorNode;
-        }
+            aCrumb = bCrumb;
     }
 }

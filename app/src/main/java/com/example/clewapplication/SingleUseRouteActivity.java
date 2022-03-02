@@ -47,7 +47,8 @@ public class SingleUseRouteActivity extends FragmentActivity {
     private Node newCrumb = new Node();
     private Node fEndpoint = new Node();
     private Node LEndpoint = new Node();
-    private Node waypoint = new Node();
+    private Node node2 = new Node();
+    private Node node3 = new Node();
     private ArrayList<Node> coordinatesList = new ArrayList<>();
     private ArrayList<Float> distancesToLineList = new ArrayList<>();
 
@@ -112,6 +113,8 @@ public class SingleUseRouteActivity extends FragmentActivity {
 
         } else {
             addLineBetweenHits(fEndpoint, LEndpoint);
+            node2 = node3;
+            crumbLines();
             bPath = false;
         }
     }
@@ -159,7 +162,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
         bPath = false;
     }
 
-    //All edits in function are new:
     public void addLineBetweenHits(Node aCrumb, Node bCrumb) {
 
             Vector3 point1, point2;
@@ -173,16 +175,21 @@ public class SingleUseRouteActivity extends FragmentActivity {
             MaterialFactory.makeOpaqueWithColor(getApplicationContext(), new Color(0, 255, 244))
                     .thenAccept(
                             material -> {
-                                ModelRenderable model = ShapeFactory.makeCube(
-                                        new Vector3(.01f, .01f, difference.length()),
-                                        Vector3.zero(), material);
+                                ModelRenderable model = ShapeFactory.makeCube(new Vector3(.01f, .01f, difference.length()), Vector3.zero(), material);
                                 Node node1 = new Node();
                                 node1.setParent(bCrumb);
                                 node1.setRenderable(model);
                                 node1.setWorldPosition(Vector3.add(point1, point2).scaled(.5f));
                                 node1.setWorldRotation(rotationFromAToB);
+                                node3 = node1;
                             }
                     );
             aCrumb = bCrumb;
+    }
+
+    public void crumbLines(){
+        for(Node n : coordinatesList){
+            addLineBetweenHits(n, node2);
+        }
     }
 }

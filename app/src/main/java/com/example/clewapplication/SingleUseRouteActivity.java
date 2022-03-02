@@ -59,7 +59,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
-        setupModel(); //Can comment out if the crumb rendering takes too much CPU
+        setupModel(); //Rendering Crumbs [SAFE DELETE]
         setUpPlane();
     }
 
@@ -167,6 +167,8 @@ public class SingleUseRouteActivity extends FragmentActivity {
             Vector3 point1, point2;
             point1 = aCrumb.getWorldPosition();
             point2 = bCrumb.getWorldPosition();
+            //TODO: the following makes vector between the two points
+            Vector3 line3 = Vector3.subtract(point1, point2);
 
             final Vector3 difference = Vector3.subtract(point1, point2);
             final Vector3 directionFromTopToBottom = difference.normalized();
@@ -178,7 +180,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
                                 ModelRenderable model = ShapeFactory.makeCube(new Vector3(.01f, .01f, difference.length()), Vector3.zero(), material);
                                 Node node1 = new Node();
                                 node1.setParent(bCrumb);
-                                node1.setRenderable(model);
+                                node1.setRenderable(model); //Rendering Lines [SAFE DELETE]***
                                 node1.setWorldPosition(Vector3.add(point1, point2).scaled(.5f));
                                 node1.setWorldRotation(rotationFromAToB);
                                 node3 = node1;

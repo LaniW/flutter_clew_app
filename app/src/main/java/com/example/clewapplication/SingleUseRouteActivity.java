@@ -48,9 +48,8 @@ public class SingleUseRouteActivity extends FragmentActivity {
     private Node fEndpoint = new Node();
     private Node LEndpoint = new Node();
     private Node waypoint = new Node();
-    private ArrayList<Node> coordinatesList = new ArrayList<Node>();
-    private ArrayList<Double> distancesToLineList = new ArrayList<Double>();
-    //private LineArray lineArr=new LineArray(2,LineArray.COORDINATES);
+    private ArrayList<Node> coordinatesList = new ArrayList<>();
+    private ArrayList<Float> distancesToLineList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,10 +165,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
             Vector3 point1, point2;
             point1 = aCrumb.getWorldPosition();
             point2 = bCrumb.getWorldPosition();
-    /*
-        First, find the vector extending between the two points and define a look rotation
-        in terms of this Vector.
-    */
+
             final Vector3 difference = Vector3.subtract(point1, point2);
             final Vector3 directionFromTopToBottom = difference.normalized();
             final Quaternion rotationFromAToB =
@@ -177,13 +173,9 @@ public class SingleUseRouteActivity extends FragmentActivity {
             MaterialFactory.makeOpaqueWithColor(getApplicationContext(), new Color(0, 255, 244))
                     .thenAccept(
                             material -> {
-                            /* Then, create a rectangular prism, using ShapeFactory.makeCube() and use the difference vector
-                                   to extend to the necessary length.  */
                                 ModelRenderable model = ShapeFactory.makeCube(
                                         new Vector3(.01f, .01f, difference.length()),
                                         Vector3.zero(), material);
-                            /* Last, set the world rotation of the node to the rotation calculated earlier and set the world position to
-                                   the midpoint between the given points . */
                                 Node node1 = new Node();
                                 node1.setParent(bCrumb);
                                 node1.setRenderable(model);

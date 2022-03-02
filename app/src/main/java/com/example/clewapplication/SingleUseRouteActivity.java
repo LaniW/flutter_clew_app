@@ -59,7 +59,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
-        setupModel();
+        setupModel(); //Can comment out if the crumb rendering takes too much CPU
         setUpPlane();
     }
 
@@ -187,9 +187,10 @@ public class SingleUseRouteActivity extends FragmentActivity {
             aCrumb = bCrumb;
     }
 
+    //TODO: Fix the method below
     public void crumbLines(){
         for(Node n : coordinatesList){
-            addLineBetweenHits(n, node2);
+            addLineBetweenHits(n, node2);  // n is fine, replace node2
         }
     }
 }

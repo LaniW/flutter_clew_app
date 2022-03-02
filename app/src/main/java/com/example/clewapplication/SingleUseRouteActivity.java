@@ -110,8 +110,9 @@ public class SingleUseRouteActivity extends FragmentActivity {
 
         if ((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
             path(bPath);
-            addLineBetweenHits(fEndpoint, LEndpoint);
+
         } else {
+            addLineBetweenHits(fEndpoint, LEndpoint);
             bPath = false;
         }
     }

@@ -32,8 +32,6 @@ import com.google.ar.sceneform.ux.TransformableNode;
 import java.util.ArrayList;
 import java.util.Vector;
 
-//Change the Gradle file for the below imports
-
 public class SingleUseRouteActivity extends FragmentActivity {
 
     private static final String TAG = SingleUseRouteActivity.class.getSimpleName();
@@ -135,8 +133,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
         crumb.setParent(anchorNode);
 
         double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
-        //half a meter~ (in the x, y and z direction)
-        //render path
 
         if (bPath) {
             if (b || distanceValue >= 0.5) {
@@ -145,8 +141,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
 
                 coordinatesList.add(crumb);
                 for (Node n : coordinatesList) {
-                    //System.out.println("COORDINATE:" + n.getWorldPosition()); //TESTING
-                    //endpoints are nodes
                     fEndpoint = coordinatesList.get(0);
                     LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
                 }
@@ -217,7 +211,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
     //TODO: Fix the method below
     public void crumbLines(){
         for(Node n : coordinatesList){
-            addLineBetweenHits(n, node2);// n is fine, replace node2
+            addLineBetweenHits(n, node2);
             pointToLine(fEndpoint, LEndpoint, n);
         }
     }

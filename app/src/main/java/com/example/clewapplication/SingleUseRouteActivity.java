@@ -30,6 +30,7 @@ import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 //Change the Gradle file for the below imports
 
@@ -167,8 +168,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
             Vector3 point1, point2;
             point1 = aCrumb.getWorldPosition();
             point2 = bCrumb.getWorldPosition();
-            //TODO: the following makes vector between the two points
-            Vector3 line3 = Vector3.subtract(point1, point2);
 
             final Vector3 difference = Vector3.subtract(point1, point2);
             final Vector3 directionFromTopToBottom = difference.normalized();
@@ -187,6 +186,16 @@ public class SingleUseRouteActivity extends FragmentActivity {
                             }
                     );
             aCrumb = bCrumb;
+    }
+
+    public void pointToLine(Node cCrumb, Node dCrumb, Node eCrumb){
+        Vector3 pointC, pointD, pointE;
+        pointC = cCrumb.getWorldPosition(); //Line
+        pointD = dCrumb.getWorldPosition(); //Line
+        pointE = eCrumb.getWorldPosition(); // Point
+        Vector3 theLine = Vector3.subtract(pointC, pointD);
+        Vector3 getMag = Vector3.cross(theLine, pointE);
+        float distance = getMag.length();
     }
 
     //TODO: Fix the method below

@@ -48,7 +48,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
     private Node LEndpoint = new Node();
     private Node node2 = new Node();
     private Node node3 = new Node();
-    private Node node5 = new Node();
     private ArrayList<Node> coordinatesList = new ArrayList<>();
     private ArrayList<Float> distancesToLineList = new ArrayList<>();
 
@@ -59,7 +58,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
-        //setupModel(); //Rendering Crumbs [SAFE DELETE]
+        setupModel(); //Rendering Crumbs [SAFE DELETE]
         setUpPlane();
     }
 
@@ -111,11 +110,9 @@ public class SingleUseRouteActivity extends FragmentActivity {
         if ((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
             path(bPath);
 
-        } else {
+        } else{
             addLineBetweenHits(fEndpoint, LEndpoint);
             node2 = node3;
-            Node node6 = node5;
-            crumbLines();
             bPath = false;
         }
     }
@@ -203,16 +200,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
                             node4.setRenderable(model); //Rendering Lines [SAFE DELETE]***
                             node4.setWorldPosition(Vector3.add(pointE, theLine).scaled(.5f));
                             node4.setWorldRotation(rotAB);
-                            node5 = node4;
                         }
                 );
-    }
-
-    //TODO: Fix the method below
-    public void crumbLines(){
-        for(Node n : coordinatesList){
-            addLineBetweenHits(n, node2);
-            pointToLine(fEndpoint, LEndpoint, n);
-        }
     }
 }

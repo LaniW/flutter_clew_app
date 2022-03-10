@@ -110,7 +110,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
         if ((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
             path(bPath);
 
-        } else{
+        }else{
             addLineBetweenHits(fEndpoint, LEndpoint);
             node2 = node3;
             bPath = false;
@@ -178,29 +178,5 @@ public class SingleUseRouteActivity extends FragmentActivity {
                                 node3 = node1;
                             }
                     );
-    }
-
-    public void pointToLine(Node cCrumb, Node dCrumb, Node eCrumb){
-        Vector3 pointC, pointD, pointE;
-        pointC = cCrumb.getWorldPosition(); //Line
-        pointD = dCrumb.getWorldPosition(); //Line
-        pointE = eCrumb.getWorldPosition(); // Point
-        Vector3 theLine = Vector3.subtract(pointC, pointD);
-        Vector3 getMag = Vector3.cross(theLine, pointE);
-        Vector3 normalZ = getMag.normalized();
-        float distance = getMag.length();
-        Quaternion rotAB =
-                Quaternion.lookRotation(normalZ, Vector3.up());
-        MaterialFactory.makeOpaqueWithColor(getApplicationContext(), new Color(0, 255, 244))
-                .thenAccept(
-                        material -> {
-                            ModelRenderable model = ShapeFactory.makeCube(new Vector3(.01f, .01f, getMag.length()), Vector3.zero(), material);
-                            Node node4 = new Node();
-                            node4.setParent(eCrumb);
-                            node4.setRenderable(model); //Rendering Lines [SAFE DELETE]***
-                            node4.setWorldPosition(Vector3.add(pointE, theLine).scaled(.5f));
-                            node4.setWorldRotation(rotAB);
-                        }
-                );
     }
 }

@@ -179,4 +179,13 @@ public class SingleUseRouteActivity extends FragmentActivity {
                             }
                     );
     }
+
+    //TODO: Make function to calculate the distances for the lines through vectors
+    public void calculateDistance(Node aCrumb, Node bCrumb){
+        Vector3 point1 = aCrumb.getWorldPosition();
+        Vector3 point2 = bCrumb.getWorldPosition();
+        Vector3 difference = Vector3.subtract(point1, point2);
+        Vector3 normalVector = difference.normalized();
+        Vector3 unitVector;
+    }
 }

@@ -181,11 +181,22 @@ public class SingleUseRouteActivity extends FragmentActivity {
     }
 
     //TODO: Make function to calculate the distances for the lines through vectors
-    public void calculateDistance(Node aCrumb, Node bCrumb){
+    public Vector3 calcUnitVector(Node aCrumb, Node bCrumb){
         Vector3 point1 = aCrumb.getWorldPosition();
         Vector3 point2 = bCrumb.getWorldPosition();
         Vector3 difference = Vector3.subtract(point1, point2);
-        Vector3 normalVector = difference.normalized();
-        Vector3 unitVector;
+        //Scales the Vector3 to the unit length (Normalized)
+        Vector3 unitVector = difference.normalized();
+        return unitVector;
+    }
+
+    public Float cdToLine(Node aCrumb, Node bCrumb, Node cCrumb){
+        Vector3 point1 = aCrumb.getWorldPosition();
+        Vector3 point2 = bCrumb.getWorldPosition();
+        Vector3 farPoint = cCrumb.getWorldPosition();
+        Vector3 unitVector = calcUnitVector(aCrumb, bCrumb);
+        Vector3 orthogonalProj = Vector3.add(unitVector.scaled(Vector3.dot(Vector3.subtract(farPoint, point1), unitVector)), point1); //multiplication is weird
+        Float distance = orthogonalProj.length();
+        return distance;
     }
 }

@@ -185,7 +185,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
         Vector3 point1 = aCrumb.getWorldPosition();
         Vector3 point2 = bCrumb.getWorldPosition();
         Vector3 difference = Vector3.subtract(point1, point2);
-        //Scales the Vector3 to the unit length (Normalized)
         return difference.normalized();
     }
 
@@ -193,8 +192,10 @@ public class SingleUseRouteActivity extends FragmentActivity {
         Vector3 point1 = aCrumb.getWorldPosition();
         Vector3 farPoint = cCrumb.getWorldPosition();
         Vector3 unitVector = calcUnitVector(aCrumb, bCrumb);
-        Vector3 orthogonalProj = Vector3.add(unitVector.scaled(Vector3.dot(Vector3.subtract(farPoint, point1), unitVector)), point1);
-        //I think that the below finds the magnitude, check the definition (returns this vector's length)
-        return orthogonalProj.length();
+        Vector3 a = Vector3.subtract(point1, farPoint);
+        Float magnitudeA = a.length();
+        Float aDotUnit = Vector3.dot(a,unitVector);
+        Float distance = (float) (Math.sqrt((magnitudeA)*(magnitudeA) - (aDotUnit)*(aDotUnit)));
+        return distance;
     }
 }

@@ -180,22 +180,15 @@ public class SingleUseRouteActivity extends FragmentActivity {
                     );
     }
 
-    //TODO: Make function to calculate the distances for the lines through vectors
-    public Vector3 calcUnitVector(Node aCrumb, Node bCrumb){
+    public float distanceToLine(Node aCrumb, Node bCrumb, Node cCrumb){
         Vector3 point1 = aCrumb.getWorldPosition();
         Vector3 point2 = bCrumb.getWorldPosition();
         Vector3 difference = Vector3.subtract(point1, point2);
-        return difference.normalized();
-    }
-
-    public Float distanceToLine(Node aCrumb, Node bCrumb, Node cCrumb){
-        Vector3 point1 = aCrumb.getWorldPosition();
         Vector3 farPoint = cCrumb.getWorldPosition();
-        Vector3 unitVector = calcUnitVector(aCrumb, bCrumb);
+        Vector3 unitVector = difference.normalized();
         Vector3 a = Vector3.subtract(point1, farPoint);
-        Float magnitudeA = a.length();
-        Float aDotUnit = Vector3.dot(a,unitVector);
-        Float distance = (float) (Math.sqrt((magnitudeA)*(magnitudeA) - (aDotUnit)*(aDotUnit)));
-        return distance;
+        float magnitudeA = a.length();
+        float aDotUnit = Vector3.dot(a,unitVector);
+        return (float) (Math.sqrt((magnitudeA)*(magnitudeA) - (aDotUnit)*(aDotUnit)));
     }
 }

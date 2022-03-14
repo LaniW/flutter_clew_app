@@ -2,7 +2,6 @@ package com.example.clewapplication;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -10,15 +9,12 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Frame;
-import com.google.ar.core.HitResult;
-import com.google.ar.core.Plane;
 import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
 import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.Node;
-import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.Color;
@@ -26,11 +22,9 @@ import com.google.ar.sceneform.rendering.MaterialFactory;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ShapeFactory;
 import com.google.ar.sceneform.ux.ArFragment;
-import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class SingleUseRouteActivity extends FragmentActivity {
 
@@ -46,10 +40,8 @@ public class SingleUseRouteActivity extends FragmentActivity {
     private Node newCrumb = new Node();
     private Node fEndpoint = new Node();
     private Node LEndpoint = new Node();
-    private Node node2 = new Node();
-    private Node node3 = new Node();
-    private ArrayList<Node> coordinatesList = new ArrayList<>();
-    private ArrayList<Float> distancesToLineList = new ArrayList<>();
+    private final ArrayList<Node> coordinatesList = new ArrayList<>();
+    private final ArrayList<Float> distancesToLineList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,14 +73,11 @@ public class SingleUseRouteActivity extends FragmentActivity {
     }
 
     private void setUpPlane() {
-        arFragment.setOnTapArPlaneListener(new BaseArFragment.OnTapArPlaneListener() {
-            @Override
-            public void onTapPlane(HitResult hitResult, Plane plane, MotionEvent motionEvent) {
-                Anchor anchor = hitResult.createAnchor();
-                AnchorNode anchorNode = new AnchorNode(anchor);
-                anchorNode.setParent(arFragment.getArSceneView().getScene());
-                createModel(anchorNode);
-            }
+        arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
+            Anchor anchor = hitResult.createAnchor();
+            AnchorNode anchorNode = new AnchorNode(anchor);
+            anchorNode.setParent(arFragment.getArSceneView().getScene());
+            createModel(anchorNode);
         });
     }
 
@@ -112,7 +101,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
 
         }else{
             addLineBetweenHits(fEndpoint, LEndpoint);
-            node2 = node3;
             bPath = false;
         }
     }
@@ -180,7 +168,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
                                 node1.setRenderable(model); //Rendering Lines [SAFE DELETE]***
                                 node1.setWorldPosition(Vector3.add(point1, point2).scaled(.5f));
                                 node1.setWorldRotation(rotationFromAToB);
-                                node3 = node1;
                             }
                     );
     }

@@ -154,6 +154,11 @@ public class SingleUseRouteActivity extends FragmentActivity {
     public void setFalse(View view) {
         buttonStart = false;
         bPath = false;
+        for(Node n : coordinatesList){
+            distancesToLineList.add(distanceToLine(fEndpoint, LEndpoint, n));
+        }
+        distancesToLineList.remove(distancesToLineList.size() - 1);
+        distancesToLineList.remove(0);
     }
 
     public void addLineBetweenHits(Node aCrumb, Node bCrumb) {

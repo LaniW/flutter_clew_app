@@ -25,6 +25,7 @@ import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SingleUseRouteActivity extends FragmentActivity {
 
@@ -100,7 +101,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
             path(bPath);
 
         }else{
-            addLineBetweenHits(fEndpoint, LEndpoint);
             bPath = false;
         }
     }
@@ -147,29 +147,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
         }
         distancesToLineList.remove(distancesToLineList.size() - 1);
         distancesToLineList.remove(0);
-    }
-
-    public void addLineBetweenHits(Node aCrumb, Node bCrumb) {
-
-            Vector3 point1, point2;
-            point1 = aCrumb.getWorldPosition();
-            point2 = bCrumb.getWorldPosition();
-
-            final Vector3 difference = Vector3.subtract(point1, point2);
-            final Vector3 directionFromTopToBottom = difference.normalized();
-            final Quaternion rotationFromAToB =
-                    Quaternion.lookRotation(directionFromTopToBottom, Vector3.up());
-            MaterialFactory.makeOpaqueWithColor(getApplicationContext(), new Color(0, 255, 244))
-                    .thenAccept(
-                            material -> {
-                                ModelRenderable model = ShapeFactory.makeCube(new Vector3(.01f, .01f, difference.length()), Vector3.zero(), material);
-                                Node node1 = new Node();
-                                node1.setParent(bCrumb);
-                                node1.setRenderable(model); //Rendering Lines [SAFE DELETE]***
-                                node1.setWorldPosition(Vector3.add(point1, point2).scaled(.5f));
-                                node1.setWorldRotation(rotationFromAToB);
-                            }
-                    );
+        System.out.println(computePath(distancesToLineList, 0.5f));
     }
 
     public float distanceToLine(Node aCrumb, Node bCrumb, Node cCrumb){
@@ -182,5 +160,20 @@ public class SingleUseRouteActivity extends FragmentActivity {
         float magnitudeA = a.length();
         float aDotUnit = Vector3.dot(a,unitVector);
         return (float) (Math.sqrt((magnitudeA)*(magnitudeA) - (aDotUnit)*(aDotUnit)));
+    }
+
+    public ArrayList<Float> computePath(ArrayList<Float> arr, float threshold){
+        ArrayList<Float> newArr = new ArrayList<>();
+        float bigFloat = Collections.max(arr);
+        if(bigFloat <= threshold){
+            newArr = arr;
+        }else{
+            for(float f : arr){
+                if(f > threshold){
+                    newArr.add(f);
+                }
+            }
+        }
+        return newArr;
     }
 }

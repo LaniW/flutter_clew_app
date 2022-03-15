@@ -150,7 +150,13 @@ public class SaveRouteActivity extends FragmentActivity {
             }
         }
         //SAFE DELETE
+        Frame frame2 = arFragment.getArSceneView().getArFrame();
+        Pose pos = frame2.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
+        Anchor anchor2 = arFragment.getArSceneView().getSession().createAnchor(pos);
+        AnchorNode anchorNode2 = new AnchorNode(anchor2);
+        anchorNode2.setParent(arFragment.getArSceneView().getScene());
         for(Node nnn : waypoints){
+            nnn.setParent(anchorNode2);
             nnn.setRenderable(modelRenderable);
         }
     }

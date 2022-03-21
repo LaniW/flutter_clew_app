@@ -144,11 +144,10 @@ public class SingleUseRouteActivity extends FragmentActivity {
         distancesToLineList.remove(distancesToLineList.size() - 1);
         distancesToLineList.remove(0);
         ArrayList<Node> waypoints = new ArrayList<>();
-        for(Node nn : coordinatesList){
-            if(computePath(distancesToLineList, 0.5f).contains(distanceToLine(fEndpoint, LEndpoint, nn))){
-                waypoints.add(nn);
-            }
-        }
+
+        //TODO: Add usage for rdp
+
+
         //SAFE DELETE
         Frame frame2 = arFragment.getArSceneView().getArFrame();
         Pose pos = frame2.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
@@ -161,7 +160,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
         }
     }
 
-    public float distanceToLine(Node aCrumb, Node bCrumb, Node cCrumb){
+    public static float distanceToLine(Node aCrumb, Node bCrumb, Node cCrumb){
         Vector3 point1 = aCrumb.getWorldPosition();
         Vector3 point2 = bCrumb.getWorldPosition();
         Vector3 difference = Vector3.subtract(point1, point2);
@@ -173,18 +172,44 @@ public class SingleUseRouteActivity extends FragmentActivity {
         return (float) (Math.sqrt((magnitudeA)*(magnitudeA) - (aDotUnit)*(aDotUnit)));
     }
 
-    public ArrayList<Float> computePath(ArrayList<Float> arr, float threshold){
-        ArrayList<Float> newArr = new ArrayList<>();
-        float bigFloat = Collections.max(arr);
-        if(bigFloat <= threshold){
-            newArr = arr;
-        }else{
-            for(float f : arr){
-                if(f > threshold){
-                    newArr.add(f);
-                }
+    //TODO: rdp and all methods below
+    private static void rdp(ArrayList<Node> arr, int s, int e, float threshold, ArrayList<Node> substituteArr) {
+        float fmax = 0;
+        int index = 0;
+
+        final int start = s;
+        final int end = e-1;
+        for (int i=start+1; i<end; i++) {
+            // Point
+            final Node inBetween = arr.get(i);
+            // Start
+            final Node startNode = arr.get(start);
+            // End
+            final Node endNode = arr.get(end);
+            final float d = distanceToLine(startNode, endNode, inBetween);
+            if (d > fmax) {
+                index = i;
+                fmax = d;
             }
         }
-        return newArr;
+        //If max distance is greater than epsilon, recursively simplify
+        if (fmax > threshold) {
+            //Recursive call
+            rdp(arr, s, index, threshold, substituteArr);
+            rdp(arr, index, e, threshold, substituteArr);
+        } else {
+            if ((end-start)>0) {
+                substituteArr.add(arr.get(start));
+                substituteArr.add(arr.get(end));
+            } else {
+                substituteArr.add(arr.get(start));
+            }
+        }
+    }
+
+    public static final ArrayList<Node> douglasPeucker(ArrayList<Node> list, float threshold){
+        final ArrayList<Node> resultList = new ArrayList<>();
+        rdp(list, 0, list.size(), threshold, resultList);
+        return resultList;
     }
 }

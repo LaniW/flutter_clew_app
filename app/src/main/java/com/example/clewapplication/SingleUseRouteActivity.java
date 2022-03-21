@@ -115,7 +115,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
         double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
 
         if (bPath) {
-            if (b || distanceValue >= 0.5) {
+            if (b || distanceValue >= 0.2) {
                 crumb.setRenderable(modelRenderable);
                 newCrumb = crumb;
 
@@ -192,7 +192,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
                 fmax = d;
             }
         }
-        //If max distance is greater than epsilon, recursively simplify
+        //If max distance is greater than threshold, recursively simplify
         if (fmax > threshold) {
             //Recursive call
             rdp(arr, s, index, threshold, substituteArr);

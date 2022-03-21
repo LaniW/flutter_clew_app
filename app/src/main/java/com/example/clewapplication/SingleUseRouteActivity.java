@@ -21,7 +21,6 @@ import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class SingleUseRouteActivity extends FragmentActivity {
 
@@ -121,7 +120,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
                 newCrumb = crumb;
 
                 coordinatesList.add(crumb);
-                for (Node n : coordinatesList) {
+                for (Node ignored : coordinatesList) {
                     fEndpoint = coordinatesList.get(0);
                     LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
                 }
@@ -146,7 +145,9 @@ public class SingleUseRouteActivity extends FragmentActivity {
         ArrayList<Node> waypoints = new ArrayList<>();
 
         //TODO: Add usage for rdp
-
+        for(Node nn : coordinatesList){
+            rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, waypoints);
+        }
 
         //SAFE DELETE
         Frame frame2 = arFragment.getArSceneView().getArFrame();
@@ -177,13 +178,12 @@ public class SingleUseRouteActivity extends FragmentActivity {
         float fmax = 0;
         int index = 0;
 
-        final int start = s;
         final int end = e-1;
-        for (int i=start+1; i<end; i++) {
+        for (int i = s +1; i<end; i++) {
             // Point
             final Node inBetween = arr.get(i);
             // Start
-            final Node startNode = arr.get(start);
+            final Node startNode = arr.get(s);
             // End
             final Node endNode = arr.get(end);
             final float d = distanceToLine(startNode, endNode, inBetween);
@@ -198,16 +198,16 @@ public class SingleUseRouteActivity extends FragmentActivity {
             rdp(arr, s, index, threshold, substituteArr);
             rdp(arr, index, e, threshold, substituteArr);
         } else {
-            if ((end-start)>0) {
-                substituteArr.add(arr.get(start));
+            if ((end- s)>0) {
+                substituteArr.add(arr.get(s));
                 substituteArr.add(arr.get(end));
             } else {
-                substituteArr.add(arr.get(start));
+                substituteArr.add(arr.get(s));
             }
         }
     }
 
-    public static final ArrayList<Node> douglasPeucker(ArrayList<Node> list, float threshold){
+    public static ArrayList<Node> douglasPeucker(ArrayList<Node> list, float threshold){
         final ArrayList<Node> resultList = new ArrayList<>();
         rdp(list, 0, list.size(), threshold, resultList);
         return resultList;

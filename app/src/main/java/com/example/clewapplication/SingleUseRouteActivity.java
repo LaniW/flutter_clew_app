@@ -144,9 +144,17 @@ public class SingleUseRouteActivity extends FragmentActivity {
         distancesToLineList.remove(0);
         ArrayList<Node> waypoints = new ArrayList<>();
 
-        //simplifies the paths (only renders waypoints)
+        //simplifies the paths (only renders paths)
         for(Node nn : coordinatesList){
             rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, waypoints);
+        }
+
+        //the notable waypoints
+        ArrayList<Node> pathWaypoints = new ArrayList<>();
+        for(Node n4 : coordinatesList){
+            if(!waypoints.contains(n4)){
+                pathWaypoints.add(n4);
+            }
         }
 
         //SAFE DELETE
@@ -155,7 +163,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
         Anchor anchor2 = arFragment.getArSceneView().getSession().createAnchor(pos);
         AnchorNode anchorNode2 = new AnchorNode(anchor2);
         anchorNode2.setParent(arFragment.getArSceneView().getScene());
-        for(Node nnn : waypoints){
+        for(Node nnn : pathWaypoints){
             nnn.setParent(anchorNode2);
             nnn.setRenderable(modelRenderable);
         }

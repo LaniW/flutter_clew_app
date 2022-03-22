@@ -18,7 +18,6 @@ import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
-import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.ArrayList;
 
@@ -47,7 +46,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
         setupModel(); //Rendering Crumbs [SAFE DELETE]
-        setUpPlane();
     }
 
     @Override
@@ -66,22 +64,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
             Toast.makeText(SingleUseRouteActivity.this, "Model can't be loaded", Toast.LENGTH_SHORT).show();
             return null;
         });
-    }
-
-    private void setUpPlane() {
-        arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
-            Anchor anchor = hitResult.createAnchor();
-            AnchorNode anchorNode = new AnchorNode(anchor);
-            anchorNode.setParent(arFragment.getArSceneView().getScene());
-            createModel(anchorNode);
-        });
-    }
-
-    private void createModel(AnchorNode anchorNode) {
-        TransformableNode node = new TransformableNode((arFragment.getTransformationSystem()));
-        node.setParent(anchorNode);
-        node.setRenderable(modelRenderable);
-        node.select();
     }
 
     private void onUpdateFrame(FrameTime frameTime) {

@@ -144,7 +144,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
         distancesToLineList.remove(0);
         ArrayList<Node> waypoints = new ArrayList<>();
 
-        //TODO: Add usage for rdp
+        //simplifies the paths (only renders waypoints)
         for(Node nn : coordinatesList){
             rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, waypoints);
         }
@@ -173,13 +173,12 @@ public class SingleUseRouteActivity extends FragmentActivity {
         return (float) (Math.sqrt((magnitudeA)*(magnitudeA) - (aDotUnit)*(aDotUnit)));
     }
 
-    //TODO: rdp and all methods below
     private static void rdp(ArrayList<Node> arr, int s, int e, float threshold, ArrayList<Node> substituteArr) {
         float fmax = 0;
         int index = 0;
 
-        final int end = e-1;
-        for (int i = s +1; i<end; i++) {
+        final int end = e - 1;
+        for (int i = s + 1; i < end; i++) {
             // Point
             final Node inBetween = arr.get(i);
             // Start
@@ -198,18 +197,12 @@ public class SingleUseRouteActivity extends FragmentActivity {
             rdp(arr, s, index, threshold, substituteArr);
             rdp(arr, index, e, threshold, substituteArr);
         } else {
-            if ((end- s)>0) {
+            if ((end - s) > 0) {
                 substituteArr.add(arr.get(s));
                 substituteArr.add(arr.get(end));
             } else {
                 substituteArr.add(arr.get(s));
             }
         }
-    }
-
-    public static ArrayList<Node> douglasPeucker(ArrayList<Node> list, float threshold){
-        final ArrayList<Node> resultList = new ArrayList<>();
-        rdp(list, 0, list.size(), threshold, resultList);
-        return resultList;
     }
 }

@@ -183,7 +183,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
         }
         //If max distance is greater than threshold, recursively simplify
         if (fmax > threshold) {
-            //Recursive call
             rdp(arr, s, index, threshold, substituteArr);
             rdp(arr, index, e, threshold, substituteArr);
         } else {

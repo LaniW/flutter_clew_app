@@ -168,13 +168,13 @@ public class SingleUseRouteActivity extends FragmentActivity {
         int index = 0;
 
         final int end = e - 1;
+        // Start
+        final Node startNode = arr.get(s);
+        // End
+        final Node endNode = arr.get(end);
         for (int i = s + 1; i < end; i++) {
             // Point
             final Node inBetween = arr.get(i);
-            // Start
-            final Node startNode = arr.get(s);
-            // End
-            final Node endNode = arr.get(end);
             final float d = distanceToLine(startNode, endNode, inBetween);
             if (d > fmax) {
                 index = i;
@@ -183,7 +183,8 @@ public class SingleUseRouteActivity extends FragmentActivity {
         }
         //If max distance is greater than threshold, recursively simplify
         if (fmax > threshold) {
-            rdp(arr, s, index, threshold, substituteArr);
+            rdp(arr, s, index + 1, threshold, substituteArr);
+            substituteArr.remove(substituteArr.size() - 1);
             rdp(arr, index, e, threshold, substituteArr);
         } else {
             if ((end - s) > 0) {

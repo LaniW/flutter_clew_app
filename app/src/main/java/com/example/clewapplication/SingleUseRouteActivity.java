@@ -168,12 +168,9 @@ public class SingleUseRouteActivity extends FragmentActivity {
         int index = 0;
 
         final int end = e - 1;
-        // Start
         final Node startNode = arr.get(s);
-        // End
         final Node endNode = arr.get(end);
         for (int i = s + 1; i < end; i++) {
-            // Point
             final Node inBetween = arr.get(i);
             final float d = distanceToLine(startNode, endNode, inBetween);
             if (d > fmax) {

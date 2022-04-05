@@ -192,4 +192,26 @@ public class SingleUseRouteActivity extends FragmentActivity {
             }
         }
     }
+
+    public static void directionToVoice(Node pointOne, Node pointTwo){
+        //distance
+        float distance = (float) (Math.sqrt(Math.pow((pointTwo.getWorldPosition().x - pointOne.getWorldPosition().x),2) +
+                                Math.pow((pointTwo.getWorldPosition().y - pointOne.getWorldPosition().y),2) +
+                                Math.pow((pointTwo.getWorldPosition().z - pointOne.getWorldPosition().z),2)));
+        //horizontal angle
+        float horizontalAngle = (float) (Math.atan2((pointTwo.getWorldPosition().y),(pointTwo.getWorldPosition().x)) -
+                                        Math.atan2((pointOne.getWorldPosition().y),(pointOne.getWorldPosition().x)));
+        //vertical angle
+        float verticalAngle = (float) (
+                Math.atan2(pointTwo.getWorldPosition().z,(
+                        Math.sqrt(
+                        Math.pow(pointTwo.getWorldPosition().x,2) +
+                        Math.pow(pointTwo.getWorldPosition().y,2) +
+                        Math.pow(pointTwo.getWorldPosition().z,2)))) -
+                Math.atan2(pointOne.getWorldPosition().z,(
+                        Math.sqrt(
+                        Math.pow(pointOne.getWorldPosition().x,2) +
+                        Math.pow(pointOne.getWorldPosition().y,2) +
+                        Math.pow(pointOne.getWorldPosition().z,2)))));
+    }
 }

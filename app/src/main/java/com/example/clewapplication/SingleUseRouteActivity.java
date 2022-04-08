@@ -1,6 +1,7 @@
 package com.example.clewapplication;
 
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class SingleUseRouteActivity extends FragmentActivity {
 
@@ -194,14 +196,14 @@ public class SingleUseRouteActivity extends FragmentActivity {
     }
 
     public static void directionToVoice(Node pointOne, Node pointTwo){
-        //distance
+        //distance (in meters)
         float distance = (float) (Math.sqrt(Math.pow((pointTwo.getWorldPosition().x - pointOne.getWorldPosition().x),2) +
                                 Math.pow((pointTwo.getWorldPosition().y - pointOne.getWorldPosition().y),2) +
                                 Math.pow((pointTwo.getWorldPosition().z - pointOne.getWorldPosition().z),2)));
-        //horizontal angle
+        //horizontal angle [theta] (+:Left -:Right)
         float horizontalAngle = (float) (Math.atan2((pointTwo.getWorldPosition().y),(pointTwo.getWorldPosition().x)) -
                                         Math.atan2((pointOne.getWorldPosition().y),(pointOne.getWorldPosition().x)));
-        //vertical angle
+        //vertical angle [phi] (+:Down -:Up)
         float verticalAngle = (float) (
                 Math.atan2(pointTwo.getWorldPosition().z,(
                         Math.sqrt(
@@ -213,5 +215,10 @@ public class SingleUseRouteActivity extends FragmentActivity {
                         Math.pow(pointOne.getWorldPosition().x,2) +
                         Math.pow(pointOne.getWorldPosition().y,2) +
                         Math.pow(pointOne.getWorldPosition().z,2)))));
+
+        /*Code either (which ever is figured out first)
+        - plays an mp3 file that shouts out direction
+        - plays Java TTS (ideal)
+        */
     }
 }

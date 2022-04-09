@@ -21,7 +21,6 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class SingleUseRouteActivity extends FragmentActivity implements TextToSpeech.OnInitListener {
 
@@ -143,7 +142,6 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                 pathWaypoints.add(n4);
             }
         }
-        speakOut("Go forward");
 
         //SAFE DELETE
         Frame frame2 = arFragment.getArSceneView().getArFrame();
@@ -220,6 +218,18 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                         Math.pow(pointOne.getWorldPosition().y,2) +
                         Math.pow(pointOne.getWorldPosition().z,2)))));
 
+        if(horizontalAngle <= ((3*Math.PI) / 4) && horizontalAngle >= (Math.PI / 4)){
+            speakOut("Go forward");
+        }else if(horizontalAngle <= ((5*Math.PI) / 4) && horizontalAngle > ((3*Math.PI) / 4)){
+            speakOut("Turn left");
+        }else if(horizontalAngle >= ((7*Math.PI) / 4) && horizontalAngle < (Math.PI / 4)){
+            speakOut("Turn right");
+        }
+        if(verticalAngle > 0){
+            speakOut("Go upstairs");
+        }else if(verticalAngle < 0){
+            speakOut("Go downstairs");
+        }
     }
 
     @Override

@@ -23,7 +23,7 @@ import com.google.ar.sceneform.ux.ArFragment;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class SingleUseRouteActivity extends FragmentActivity {
+public class SingleUseRouteActivity extends FragmentActivity implements TextToSpeech.OnInitListener {
 
     private static final String TAG = SingleUseRouteActivity.class.getSimpleName();
 
@@ -39,6 +39,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
     private Node LEndpoint = new Node();
     private final ArrayList<Node> coordinatesList = new ArrayList<>();
     private final ArrayList<Float> distancesToLineList = new ArrayList<>();
+    private static TextToSpeech tts = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,8 @@ public class SingleUseRouteActivity extends FragmentActivity {
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
         setupModel(); //Rendering Crumbs [SAFE DELETE]
+
+        tts = new TextToSpeech(this, this);
     }
 
     @Override
@@ -140,6 +143,7 @@ public class SingleUseRouteActivity extends FragmentActivity {
                 pathWaypoints.add(n4);
             }
         }
+        speakOut("Go forward");
 
         //SAFE DELETE
         Frame frame2 = arFragment.getArSceneView().getArFrame();
@@ -216,6 +220,14 @@ public class SingleUseRouteActivity extends FragmentActivity {
                         Math.pow(pointOne.getWorldPosition().y,2) +
                         Math.pow(pointOne.getWorldPosition().z,2)))));
 
+    }
 
+    @Override
+    public void onInit(int i) {
+
+    }
+
+    private static void speakOut(String text){
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "");
     }
 }

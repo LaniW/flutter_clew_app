@@ -200,10 +200,10 @@ public class SingleUseRouteActivity extends FragmentActivity {
         float distance = (float) (Math.sqrt(Math.pow((pointTwo.getWorldPosition().x - pointOne.getWorldPosition().x),2) +
                                 Math.pow((pointTwo.getWorldPosition().y - pointOne.getWorldPosition().y),2) +
                                 Math.pow((pointTwo.getWorldPosition().z - pointOne.getWorldPosition().z),2)));
-        //horizontal angle [theta] (+:Left -:Right)
+        //horizontal angle [theta] ()
         float horizontalAngle = (float) (Math.atan2((pointTwo.getWorldPosition().y),(pointTwo.getWorldPosition().x)) -
                                         Math.atan2((pointOne.getWorldPosition().y),(pointOne.getWorldPosition().x)));
-        //vertical angle [phi] (+:Down -:Up)
+        //vertical angle [phi] ()
         float verticalAngle = (float) (
                 Math.atan2(pointTwo.getWorldPosition().z,(
                         Math.sqrt(
@@ -216,9 +216,6 @@ public class SingleUseRouteActivity extends FragmentActivity {
                         Math.pow(pointOne.getWorldPosition().y,2) +
                         Math.pow(pointOne.getWorldPosition().z,2)))));
 
-        /*Code either (which ever is figured out first)
-        - plays an mp3 file that shouts out direction
-        - plays Java TTS (ideal)
-        */
+
     }
 }

@@ -206,17 +206,17 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         float horizontalAngle = (float) (Math.atan2((pointTwo.getWorldPosition().y),(pointTwo.getWorldPosition().x)) -
                                         Math.atan2((pointOne.getWorldPosition().y),(pointOne.getWorldPosition().x)));
         //vertical angle [phi] ()
-        float verticalAngle = (float) (
-                Math.atan2(pointTwo.getWorldPosition().z,(
+        float verticalAngle = (float)(
+                Math.acos(pointTwo.getWorldPosition().z / (
                         Math.sqrt(
                         Math.pow(pointTwo.getWorldPosition().x,2) +
                         Math.pow(pointTwo.getWorldPosition().y,2) +
                         Math.pow(pointTwo.getWorldPosition().z,2)))) -
-                Math.atan2(pointOne.getWorldPosition().z,(
+                Math.acos((pointOne.getWorldPosition().z / (
                         Math.sqrt(
                         Math.pow(pointOne.getWorldPosition().x,2) +
                         Math.pow(pointOne.getWorldPosition().y,2) +
-                        Math.pow(pointOne.getWorldPosition().z,2)))));
+                        Math.pow(pointOne.getWorldPosition().z,2))))));
 
         if(horizontalAngle <= ((3*Math.PI) / 4) && horizontalAngle >= (Math.PI / 4)){
             speakOut("Go forward");

@@ -1,5 +1,6 @@
 package com.example.clewapplication;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
@@ -14,6 +15,7 @@ import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
 import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.Camera;
 import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
@@ -21,12 +23,14 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SingleUseRouteActivity extends FragmentActivity implements TextToSpeech.OnInitListener {
 
     private static final String TAG = SingleUseRouteActivity.class.getSimpleName();
 
-    private ArFragment arFragment;
+    @SuppressLint("StaticFieldLeak")
+    private static ArFragment arFragment;
 
     private Session session;
     private ModelRenderable modelRenderable;
@@ -46,6 +50,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         setContentView(R.layout.activity_single_use_route);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+        assert arFragment != null;
         arFragment.getArSceneView().getScene().addOnUpdateListener(this::onUpdateFrame);
         setupModel(); //Rendering Crumbs [SAFE DELETE]
 
@@ -90,8 +95,9 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
 
         Frame frame = arFragment.getArSceneView().getArFrame();
 
+        assert frame != null;
         Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
-        Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(pos);
+        Anchor anchor = Objects.requireNonNull(arFragment.getArSceneView().getSession()).createAnchor(pos);
         AnchorNode anchorNode = new AnchorNode(anchor);
         anchorNode.setParent(arFragment.getArSceneView().getScene());
 
@@ -145,8 +151,9 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
 
         //SAFE DELETE
         Frame frame2 = arFragment.getArSceneView().getArFrame();
+        assert frame2 != null;
         Pose pos = frame2.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
-        Anchor anchor2 = arFragment.getArSceneView().getSession().createAnchor(pos);
+        Anchor anchor2 = Objects.requireNonNull(arFragment.getArSceneView().getSession()).createAnchor(pos);
         AnchorNode anchorNode2 = new AnchorNode(anchor2);
         anchorNode2.setParent(arFragment.getArSceneView().getScene());
         for(Node nnn : pathWaypoints){
@@ -198,38 +205,38 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
     }
 
     public static void directionToVoice(Node pointOne, Node pointTwo){
-        //distance (in meters)
-        float distance = (float) (Math.sqrt(Math.pow((pointTwo.getWorldPosition().x - pointOne.getWorldPosition().x),2) +
-                                Math.pow((pointTwo.getWorldPosition().y - pointOne.getWorldPosition().y),2) +
-                                Math.pow((pointTwo.getWorldPosition().z - pointOne.getWorldPosition().z),2)));
-        //horizontal angle [theta] ()
-        float horizontalAngle = (float) (Math.atan2((pointTwo.getWorldPosition().y),(pointTwo.getWorldPosition().x)) -
-                                        Math.atan2((pointOne.getWorldPosition().y),(pointOne.getWorldPosition().x)));
-        //vertical angle [phi] ()
-        float verticalAngle = (float)(
-                Math.acos(pointTwo.getWorldPosition().z / (
-                        Math.sqrt(
-                        Math.pow(pointTwo.getWorldPosition().x,2) +
-                        Math.pow(pointTwo.getWorldPosition().y,2) +
-                        Math.pow(pointTwo.getWorldPosition().z,2)))) -
-                Math.acos((pointOne.getWorldPosition().z / (
-                        Math.sqrt(
-                        Math.pow(pointOne.getWorldPosition().x,2) +
-                        Math.pow(pointOne.getWorldPosition().y,2) +
-                        Math.pow(pointOne.getWorldPosition().z,2))))));
 
-        if(horizontalAngle <= ((3*Math.PI) / 4) && horizontalAngle >= (Math.PI / 4)){
-            speakOut("Go forward");
-        }else if(horizontalAngle <= ((5*Math.PI) / 4) && horizontalAngle > ((3*Math.PI) / 4)){
-            speakOut("Turn left");
-        }else if(horizontalAngle >= ((7*Math.PI) / 4) && horizontalAngle < (Math.PI / 4)){
-            speakOut("Turn right");
-        }
-        if(verticalAngle > 0){
-            speakOut("Go upstairs");
-        }else if(verticalAngle < 0){
-            speakOut("Go downstairs");
-        }
+        //Difference vector
+        Vector3 point1 = pointOne.getWorldPosition();
+        Vector3 point2 = pointTwo.getWorldPosition();
+        Vector3 difference = Vector3.subtract(point2, point1);
+
+        //-Z axis vector
+        Camera arCamera = arFragment.getArSceneView().getScene().getCamera();
+        Vector3 cameraPos = arCamera.getWorldPosition();
+        Vector3 cameraForward = Vector3.add(cameraPos, arCamera.getForward().normalized());
+        Vector3 frontFaceZ = Vector3.subtract(cameraForward, cameraPos);
+        frontFaceZ = new Vector3(frontFaceZ.x, 0, frontFaceZ.z).normalized();
+
+        //distance (in meters) [could simplify to length of difference of difference and frontFaceZ]
+        float distance = (float) (Math.sqrt(Math.pow((frontFaceZ.x - difference.x),2) +
+                                Math.pow((frontFaceZ.y - difference.y),2) +
+                                Math.pow((frontFaceZ.z - difference.z),2)));
+        //horizontal angle (in radians)
+        float horizontalAngle = (float) (Math.atan2((frontFaceZ.y),(frontFaceZ.x)) -
+                                        Math.atan2((difference.y),(difference.x)));
+        //vertical angle (in radians)
+        float verticalAngle = (float)(
+                Math.acos(frontFaceZ.z / (
+                        Math.sqrt(
+                        Math.pow(frontFaceZ.x,2) +
+                        Math.pow(frontFaceZ.y,2) +
+                        Math.pow(frontFaceZ.z,2)))) -
+                Math.acos((difference.z / (
+                        Math.sqrt(
+                        Math.pow(difference.x,2) +
+                        Math.pow(difference.y,2) +
+                        Math.pow(difference.z,2))))));
     }
 
     @Override

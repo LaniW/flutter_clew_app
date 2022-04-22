@@ -160,6 +160,10 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             nnn.setParent(anchorNode2);
             nnn.setRenderable(modelRenderable);
         }
+
+        for(int j = 0; j < pathWaypoints.size() - 1; j++){
+            directionToVoice(pathWaypoints.get(j),pathWaypoints.get(j + 1));
+        }
     }
 
     public static float distanceToLine(Node aCrumb, Node bCrumb, Node cCrumb){
@@ -240,6 +244,12 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                         Math.pow(difference.x,2) +
                         Math.pow(difference.y,2) +
                         Math.pow(difference.z,2))))));
+
+        if(verticalAngle > 0){
+            speakOut("go upstairs");
+        }else if(verticalAngle < 0){
+            speakOut("go downstairs");
+        }
     }
 
     @Override

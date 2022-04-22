@@ -202,6 +202,9 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                 substituteArr.add(arr.get(s));
             }
         }
+        if(substituteArr.size() > 2) {
+            substituteArr.remove(substituteArr.size() - 1);
+        }
     }
 
     public static void directionToVoice(Node pointOne, Node pointTwo){
@@ -218,7 +221,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         Vector3 frontFaceZ = Vector3.subtract(cameraForward, cameraPos);
         frontFaceZ = new Vector3(frontFaceZ.x, 0, frontFaceZ.z).normalized();
 
-        //distance (in meters) [could simplify to length of difference of difference and frontFaceZ]
+        //distance (in meters)
         float distance = (float) (Math.sqrt(Math.pow((frontFaceZ.x - difference.x),2) +
                                 Math.pow((frontFaceZ.y - difference.y),2) +
                                 Math.pow((frontFaceZ.z - difference.z),2)));

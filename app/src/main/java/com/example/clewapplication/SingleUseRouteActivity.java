@@ -161,8 +161,8 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             nnn.setRenderable(modelRenderable);
         }
 
-        for(int j = 0; j < pathWaypoints.size() - 1; j++){
-            directionToVoice(pathWaypoints.get(j),pathWaypoints.get(j + 1));
+        for(int j = pathWaypoints.size() - 1; j > 0; j--){
+            directionToVoice(pathWaypoints.get(j - 1),pathWaypoints.get(j));
         }
     }
 
@@ -249,6 +249,8 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             speakOut("go upstairs");
         }else if(verticalAngle < 0){
             speakOut("go downstairs");
+        }else{
+            speakOut("go forward");
         }
     }
 

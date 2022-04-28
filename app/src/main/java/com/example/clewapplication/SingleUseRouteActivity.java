@@ -129,19 +129,22 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
     public void setFalse(View view) {
         buttonStart = false;
         bPath = false;
+        //I do not think I actually use the distances below
+        /*
         for(Node n : coordinatesList){
-            distancesToLineList.add(distanceToLine(fEndpoint, LEndpoint, n));
+           distancesToLineList.add(distanceToLine(fEndpoint, LEndpoint, n));
         }
         distancesToLineList.remove(distancesToLineList.size() - 1);
         distancesToLineList.remove(0);
+         */
         ArrayList<Node> waypoints = new ArrayList<>();
 
-        //simplifies the paths (only renders paths)
+        //simplifies the paths (only creates line segments, not actual waypoints)
         for(Node nn : coordinatesList){
             rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, waypoints);
         }
 
-        //the notable waypoints
+        //the notable waypoints (points distinguished from the line segments)
         ArrayList<Node> pathWaypoints = new ArrayList<>();
         for(Node n4 : coordinatesList){
             if(!waypoints.contains(n4)){
@@ -161,9 +164,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             nnn.setRenderable(modelRenderable);
         }
 
-        for(int j = pathWaypoints.size() - 1; j > 0; j--){
-            directionToVoice(pathWaypoints.get(j - 1),pathWaypoints.get(j));
-        }
+
     }
 
     public static float distanceToLine(Node aCrumb, Node bCrumb, Node cCrumb){
@@ -172,7 +173,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         Vector3 difference = Vector3.subtract(point1, point2);
         Vector3 farPoint = cCrumb.getWorldPosition();
         Vector3 unitVector = difference.normalized();
-        Vector3 a = Vector3.subtract(point1, farPoint);
+        Vector3 a = Vector3.subtract(farPoint, point1);
         float magnitudeA = a.length();
         float aDotUnit = Vector3.dot(a,unitVector);
         return (float) (Math.sqrt((magnitudeA)*(magnitudeA) - (aDotUnit)*(aDotUnit)));
@@ -250,6 +251,21 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         }else if(verticalAngle < 0){
             speakOut("go downstairs");
         }else{
+            //the vertical angle is always equal to zero and speaking once
+            /*
+            Where did the mistake originate
+            print out coordinate list
+            print out list of waypoints
+            Test the values of the vectors
+            See what it is all equal to
+
+            System.out.println("Difference vector:" +  difference); //always 0
+            System.out.println("Z vector:" +  frontFaceZ); //stays the same
+            System.out.println("vertical angle:" +  verticalAngle); //null
+            System.out.println("horizontal angle:" +  horizontalAngle); //0
+            System.out.println("point1:" +  point1); //same as point2
+            System.out.println("point2:" +  point2);
+             */
             speakOut("go forward");
         }
     }

@@ -131,6 +131,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         }
 
         //the notable waypoints (points distinguished from the line segments)
+        //Error here?
         ArrayList<Node> pathWaypoints = new ArrayList<>();
         for(Node n4 : coordinatesList){
             if(!lineWaypoints.contains(n4)){
@@ -168,6 +169,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         return (float) (Math.sqrt((magnitudeA)*(magnitudeA) - (aDotUnit)*(aDotUnit)));
     }
 
+    //Error here?
     private static void rdp(ArrayList<Node> arr, int s, int e, float threshold, ArrayList<Node> substituteArr) {
         float fmax = 0;
         int index = 0;

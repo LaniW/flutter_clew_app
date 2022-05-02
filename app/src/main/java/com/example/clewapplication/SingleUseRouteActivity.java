@@ -169,15 +169,13 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         return (float) (Math.sqrt((magnitudeA)*(magnitudeA) - (aDotUnit)*(aDotUnit)));
     }
 
-    //Error here?
     private static void rdp(ArrayList<Node> arr, int s, int e, float threshold, ArrayList<Node> substituteArr) {
         float fmax = 0;
         int index = 0;
 
-        final int end = e - 1;
         final Node startNode = arr.get(s);
-        final Node endNode = arr.get(end);
-        for (int i = s + 1; i < end; i++) {
+        final Node endNode = arr.get(e - 1);
+        for (int i = s + 1; i < e - 1; i++) {
             final Node inBetween = arr.get(i);
             final float d = distanceToLine(startNode, endNode, inBetween);
             if (d > fmax) {
@@ -188,12 +186,12 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         //If max distance is greater than threshold, recursively simplify
         if (fmax > threshold) {
             rdp(arr, s, index + 1, threshold, substituteArr);
-            substituteArr.remove(substituteArr.size() - 1);
             rdp(arr, index, e, threshold, substituteArr);
+            substituteArr.remove(substituteArr.size() - 1);
         } else {
-            if ((end - s) > 0) {
+            if ((e - 1 - s) > 0) {
                 substituteArr.add(arr.get(s));
-                substituteArr.add(arr.get(end));
+                substituteArr.add(arr.get(e - 1));
             } else {
                 substituteArr.add(arr.get(s));
             }

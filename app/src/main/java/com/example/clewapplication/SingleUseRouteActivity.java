@@ -38,10 +38,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
     private boolean buttonStart = false;
     private boolean bPath = true;
     private Node newCrumb = new Node();
-    private Node fEndpoint = new Node();
-    private Node LEndpoint = new Node();
     private final ArrayList<Node> coordinatesList = new ArrayList<>();
-    private final ArrayList<Float> distancesToLineList = new ArrayList<>();
     private static TextToSpeech tts = null;
 
     @Override
@@ -112,10 +109,6 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                 newCrumb = crumb;
 
                 coordinatesList.add(crumb);
-                for (Node ignored : coordinatesList) {
-                    fEndpoint = coordinatesList.get(0);
-                    LEndpoint = coordinatesList.get(coordinatesList.size() - 1);
-                }
                 b = false;
             }
         }
@@ -129,25 +122,18 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
     public void setFalse(View view) {
         buttonStart = false;
         bPath = false;
-        //I do not think I actually use the distances below
-        /*
-        for(Node n : coordinatesList){
-           distancesToLineList.add(distanceToLine(fEndpoint, LEndpoint, n));
-        }
-        distancesToLineList.remove(distancesToLineList.size() - 1);
-        distancesToLineList.remove(0);
-         */
-        ArrayList<Node> waypoints = new ArrayList<>();
+
+        ArrayList<Node> lineWaypoints = new ArrayList<>();
 
         //simplifies the paths (only creates line segments, not actual waypoints)
         for(Node nn : coordinatesList){
-            rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, waypoints);
+            rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, lineWaypoints);
         }
 
         //the notable waypoints (points distinguished from the line segments)
         ArrayList<Node> pathWaypoints = new ArrayList<>();
         for(Node n4 : coordinatesList){
-            if(!waypoints.contains(n4)){
+            if(!lineWaypoints.contains(n4)){
                 pathWaypoints.add(n4);
             }
         }
@@ -164,7 +150,10 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             nnn.setRenderable(modelRenderable);
         }
 
-
+        //SAFE DELETE
+        for(int i = 0; i < pathWaypoints.size(); i++){
+            System.out.println("Apples: "+ pathWaypoints.get(i).getWorldPosition());
+        }
     }
 
     public static float distanceToLine(Node aCrumb, Node bCrumb, Node cCrumb){
@@ -206,9 +195,6 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             } else {
                 substituteArr.add(arr.get(s));
             }
-        }
-        if(substituteArr.size() > 2) {
-            substituteArr.remove(substituteArr.size() - 1);
         }
     }
 

@@ -104,7 +104,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
 
         if (bPath) {
-            if (b || distanceValue >= 0.2) {
+            if (b || distanceValue >= 0.02) {
                 crumb.setRenderable(modelRenderable);
                 newCrumb = crumb;
 
@@ -131,7 +131,6 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         }
 
         //the notable waypoints (points distinguished from the line segments)
-        //Error here?
         ArrayList<Node> pathWaypoints = new ArrayList<>();
         for(Node n4 : coordinatesList){
             if(!lineWaypoints.contains(n4)){
@@ -139,7 +138,11 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             }
         }
 
-        //SAFE DELETE
+        for(int l = 0; l < pathWaypoints.size() - 1; l++){
+            directionToVoice(pathWaypoints.get(l), pathWaypoints.get(l + 1));
+        }
+
+        //SAFE DELETE (sets all nodes to a single parent node but also renders it)
         Frame frame2 = arFragment.getArSceneView().getArFrame();
         assert frame2 != null;
         Pose pos = frame2.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
@@ -149,11 +152,6 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         for(Node nnn : pathWaypoints){
             nnn.setParent(anchorNode2);
             nnn.setRenderable(modelRenderable);
-        }
-
-        //SAFE DELETE
-        for(int i = 0; i < pathWaypoints.size(); i++){
-            System.out.println("Apples: "+ pathWaypoints.get(i).getWorldPosition());
         }
     }
 
@@ -216,9 +214,11 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         float distance = (float) (Math.sqrt(Math.pow((frontFaceZ.x - difference.x),2) +
                                 Math.pow((frontFaceZ.y - difference.y),2) +
                                 Math.pow((frontFaceZ.z - difference.z),2)));
+
         //horizontal angle (in radians)
         float horizontalAngle = (float) (Math.atan2((frontFaceZ.y),(frontFaceZ.x)) -
                                         Math.atan2((difference.y),(difference.x)));
+
         //vertical angle (in radians)
         float verticalAngle = (float)(
                 Math.acos(frontFaceZ.z / (
@@ -232,6 +232,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                         Math.pow(difference.y,2) +
                         Math.pow(difference.z,2))))));
 
+        //Angle turns to determine direction (vertical and horizontal)
         if(verticalAngle > 0){
             speakOut("go upstairs");
         }else if(verticalAngle < 0){
@@ -254,6 +255,13 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
              */
             speakOut("go forward");
         }
+
+        System.out.println("DV bananas: " + difference);
+        System.out.println("Z bananas: " + frontFaceZ);
+        System.out.println("VA bananas: " + verticalAngle);
+        System.out.println("HA bananas: " + horizontalAngle);
+        System.out.println("p1 bananas: " + point1);
+        System.out.println("p2 bananas: " + point2);
     }
 
     @Override

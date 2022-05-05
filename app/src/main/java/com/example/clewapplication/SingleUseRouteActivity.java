@@ -104,7 +104,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         double distanceValue = Math.sqrt((crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) * (crumb.getWorldPosition().x - newCrumb.getWorldPosition().x) + (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) * (crumb.getWorldPosition().y - newCrumb.getWorldPosition().y) + (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z) * (crumb.getWorldPosition().z - newCrumb.getWorldPosition().z));
 
         if (bPath) {
-            if (b || distanceValue >= 0.02) {
+            if (b || distanceValue >= 0.2) {
                 crumb.setRenderable(modelRenderable);
                 newCrumb = crumb;
 
@@ -138,7 +138,8 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             }
         }
 
-        for(int l = 0; l < pathWaypoints.size() - 1; l++){
+        //The path waypoints arraylist is 436 nodes long? (when run) but only had a couple of nodes displayed
+        for(int l = 0; l < coordinatesList.size() - pathWaypoints.size(); l++){
             directionToVoice(pathWaypoints.get(l), pathWaypoints.get(l + 1));
         }
 
@@ -233,27 +234,12 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                         Math.pow(difference.z,2))))));
 
         //Angle turns to determine direction (vertical and horizontal)
-        if(verticalAngle > 0){
-            speakOut("go upstairs");
-        }else if(verticalAngle < 0){
+        if(verticalAngle >= -0.5 && verticalAngle <= 0.5){
+            speakOut("go forward");
+        }else if(verticalAngle < -0.5){
             speakOut("go downstairs");
         }else{
-            //the vertical angle is always equal to zero and speaking once
-            /*
-            Where did the mistake originate
-            print out coordinate list
-            print out list of waypoints
-            Test the values of the vectors
-            See what it is all equal to
-
-            System.out.println("Difference vector:" +  difference); //always 0
-            System.out.println("Z vector:" +  frontFaceZ); //stays the same
-            System.out.println("vertical angle:" +  verticalAngle); //null
-            System.out.println("horizontal angle:" +  horizontalAngle); //0
-            System.out.println("point1:" +  point1); //same as point2
-            System.out.println("point2:" +  point2);
-             */
-            speakOut("go forward");
+            speakOut("go upstairs");
         }
 
         System.out.println("DV bananas: " + difference);
@@ -270,6 +256,6 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
     }
 
     private static void speakOut(String text){
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "");
+        tts.speak(text, TextToSpeech.QUEUE_ADD, null, "");
     }
 }

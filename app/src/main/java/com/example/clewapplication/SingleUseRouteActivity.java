@@ -234,20 +234,15 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                         Math.pow(difference.z,2))))));
 
         //Angle turns to determine direction (vertical and horizontal)
-        if(verticalAngle >= -0.5 && verticalAngle <= 0.5){
+        if(verticalAngle >= -1.0 && verticalAngle <= 1.0){
             speakOut("go forward");
-        }else if(verticalAngle < -0.5){
+        }else if(verticalAngle < -1.0){
             speakOut("go downstairs");
         }else{
             speakOut("go upstairs");
         }
 
-        System.out.println("DV bananas: " + difference);
-        System.out.println("Z bananas: " + frontFaceZ);
         System.out.println("VA bananas: " + verticalAngle);
-        System.out.println("HA bananas: " + horizontalAngle);
-        System.out.println("p1 bananas: " + point1);
-        System.out.println("p2 bananas: " + point2);
     }
 
     @Override

@@ -83,7 +83,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         if ((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
             path(bPath);
 
-        }else{
+        } else {
             bPath = false;
         }
     }
@@ -126,20 +126,20 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         ArrayList<Node> lineWaypoints = new ArrayList<>();
 
         //simplifies the paths (only creates line segments, not actual waypoints)
-        for(Node nn : coordinatesList){
+        for (Node nn : coordinatesList) {
             rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, lineWaypoints);
         }
 
         //the notable waypoints (points distinguished from the line segments)
         ArrayList<Node> pathWaypoints = new ArrayList<>();
-        for(Node n4 : coordinatesList){
-            if(!lineWaypoints.contains(n4)){
+        for (Node n4 : coordinatesList) {
+            if (!lineWaypoints.contains(n4)) {
                 pathWaypoints.add(n4);
             }
         }
 
         //The path waypoints arraylist is 436 nodes long? (when run) but only had a couple of nodes displayed
-        for(int l = 0; l < coordinatesList.size() - pathWaypoints.size(); l++){
+        for (int l = 0; l < coordinatesList.size() - pathWaypoints.size(); l++) {
             directionToVoice(pathWaypoints.get(l), pathWaypoints.get(l + 1));
         }
 
@@ -150,13 +150,13 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         Anchor anchor2 = Objects.requireNonNull(arFragment.getArSceneView().getSession()).createAnchor(pos);
         AnchorNode anchorNode2 = new AnchorNode(anchor2);
         anchorNode2.setParent(arFragment.getArSceneView().getScene());
-        for(Node nnn : pathWaypoints){
+        for (Node nnn : pathWaypoints) {
             nnn.setParent(anchorNode2);
             nnn.setRenderable(modelRenderable);
         }
     }
 
-    public static float distanceToLine(Node aCrumb, Node bCrumb, Node cCrumb){
+    public static float distanceToLine(Node aCrumb, Node bCrumb, Node cCrumb) {
         Vector3 point1 = aCrumb.getWorldPosition();
         Vector3 point2 = bCrumb.getWorldPosition();
         Vector3 difference = Vector3.subtract(point1, point2);
@@ -164,8 +164,8 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         Vector3 unitVector = difference.normalized();
         Vector3 a = Vector3.subtract(farPoint, point1);
         float magnitudeA = a.length();
-        float aDotUnit = Vector3.dot(a,unitVector);
-        return (float) (Math.sqrt((magnitudeA)*(magnitudeA) - (aDotUnit)*(aDotUnit)));
+        float aDotUnit = Vector3.dot(a, unitVector);
+        return (float) (Math.sqrt((magnitudeA) * (magnitudeA) - (aDotUnit) * (aDotUnit)));
     }
 
     private static void rdp(ArrayList<Node> arr, int s, int e, float threshold, ArrayList<Node> substituteArr) {
@@ -197,7 +197,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         }
     }
 
-    public static void directionToVoice(Node pointOne, Node pointTwo){
+    public static void directionToVoice(Node pointOne, Node pointTwo) {
 
         //Difference vector
         Vector3 point1 = pointOne.getWorldPosition();
@@ -212,37 +212,44 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         frontFaceZ = new Vector3(frontFaceZ.x, 0, frontFaceZ.z).normalized();
 
         //distance (in meters)
-        float distance = (float) (Math.sqrt(Math.pow((frontFaceZ.x - difference.x),2) +
-                                Math.pow((frontFaceZ.y - difference.y),2) +
-                                Math.pow((frontFaceZ.z - difference.z),2)));
+        float distance = (float) (Math.sqrt(Math.pow((frontFaceZ.x - difference.x), 2) +
+                Math.pow((frontFaceZ.y - difference.y), 2) +
+                Math.pow((frontFaceZ.z - difference.z), 2)));
 
         //horizontal angle (in radians)
-        float horizontalAngle = (float) (Math.atan2((frontFaceZ.y),(frontFaceZ.x)) -
-                                        Math.atan2((difference.y),(difference.x)));
+        float horizontalAngle = (float) (Math.atan2((frontFaceZ.y), (frontFaceZ.x)) -
+                Math.atan2((difference.y), (difference.x)));
 
         //vertical angle (in radians)
-        float verticalAngle = (float)(
+        float verticalAngle = (float) (
                 Math.acos(frontFaceZ.z / (
                         Math.sqrt(
-                        Math.pow(frontFaceZ.x,2) +
-                        Math.pow(frontFaceZ.y,2) +
-                        Math.pow(frontFaceZ.z,2)))) -
-                Math.acos((difference.z / (
-                        Math.sqrt(
-                        Math.pow(difference.x,2) +
-                        Math.pow(difference.y,2) +
-                        Math.pow(difference.z,2))))));
+                                Math.pow(frontFaceZ.x, 2) +
+                                        Math.pow(frontFaceZ.y, 2) +
+                                        Math.pow(frontFaceZ.z, 2)))) -
+                        Math.acos((difference.z / (
+                                Math.sqrt(
+                                        Math.pow(difference.x, 2) +
+                                                Math.pow(difference.y, 2) +
+                                                Math.pow(difference.z, 2))))));
 
-        //Angle turns to determine direction (vertical and horizontal)
-        if(verticalAngle >= -1.0 && verticalAngle <= 1.0){
-            speakOut("go forward");
-        }else if(verticalAngle < -1.0){
-            speakOut("go downstairs");
-        }else{
+        if ((point2.y - point1.y) > 0.2) {
             speakOut("go upstairs");
+        } else if ((point2.y - point1.y) < -0.2) {
+            speakOut("go downstairs");
+        } else if ((point2.y - point1.y) <= 0.2 && (point2.y - point1.y) >= -0.2) {
+            if ((point2.z - point1.z) <= -0.2) {
+                speakOut("turn around");
+            } else if ((point2.z - point1.z) >= 0.2) {
+                if ((point2.x - point1.x) <= -0.2) {
+                    speakOut("turn left");
+                } else if ((point2.x - point1.x) >= 0.2) {
+                    speakOut("turn right");
+                } else {
+                    speakOut("go forward");
+                }
+            }
         }
-
-        System.out.println("VA bananas: " + verticalAngle);
     }
 
     @Override
@@ -250,7 +257,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
 
     }
 
-    private static void speakOut(String text){
+    private static void speakOut(String text) {
         tts.speak(text, TextToSpeech.QUEUE_ADD, null, "");
     }
 }

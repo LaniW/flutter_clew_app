@@ -233,23 +233,33 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                                                 Math.pow(difference.y, 2) +
                                                 Math.pow(difference.z, 2))))));
 
-        if ((point2.y - point1.y) > 0.2) {
+        if ((point2.y - point1.y) > 0.01) {
             speakOut("go upstairs");
-        } else if ((point2.y - point1.y) < -0.2) {
+            System.out.println("bananas go upstairs");
+        } else if ((point2.y - point1.y) < -0.01) {
             speakOut("go downstairs");
-        } else if ((point2.y - point1.y) <= 0.2 && (point2.y - point1.y) >= -0.2) {
-            if ((point2.z - point1.z) <= -0.2) {
+            System.out.println("bananas go downstairs");
+        } else {
+            if ((point2.z - point1.z) >= 0.03) {
                 speakOut("turn around");
-            } else if ((point2.z - point1.z) >= 0.2) {
-                if ((point2.x - point1.x) <= -0.2) {
+                System.out.println("bananas turn around");
+            } else {
+                if ((point2.x - point1.x) <= -0.01) {
                     speakOut("turn left");
-                } else if ((point2.x - point1.x) >= 0.2) {
+                    System.out.println("bananas turn left");
+                } else if ((point2.x - point1.x) >= 0.01) {
                     speakOut("turn right");
+                    System.out.println("bananas turn right");
                 } else {
-                    speakOut("go forward");
+                    speakOut("go forwards");
+                    System.out.println("bananas go forwards");
                 }
             }
         }
+
+        System.out.println("bananas x: " + (point2.x - point1.x));
+        System.out.println("bananas y: " + (point2.y - point1.y));
+        System.out.println("bananas z: " + (point2.z - point1.z));
     }
 
     @Override

@@ -24,6 +24,7 @@ import com.google.ar.sceneform.ux.ArFragment;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Vector;
 
 public class SingleUseRouteActivity extends FragmentActivity implements TextToSpeech.OnInitListener {
 
@@ -125,7 +126,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
 
         ArrayList<Node> lineWaypoints = new ArrayList<>();
 
-        //simplifies the paths (only creates line segments, not actual waypoints)
+        //simplifies the paths (only creates line segments, not actual waypoints) [try removing the for loop]
         for (Node nn : coordinatesList) {
             rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, lineWaypoints);
         }
@@ -142,6 +143,8 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         for (int l = 0; l < coordinatesList.size() - pathWaypoints.size(); l++) {
             directionToVoice(pathWaypoints.get(l), pathWaypoints.get(l + 1));
         }
+        //call on the first waypoint
+        //if the distance ~= 0
 
         //SAFE DELETE (sets all nodes to a single parent node but also renders it)
         Frame frame2 = arFragment.getArSceneView().getArFrame();
@@ -197,15 +200,26 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         }
     }
 
+    //world to local point (should only take in the next waypoint you are trying to get to)
+    //boolean check true or false if point should be checked off
+    //relative point replace pt1
+    //assume user holds phone upright
+    //once you find the relative point you can convert to spherical coordinates
+    // if y is +- check what direction you have to go in
+    //print relative pt
+    //draw diagram that shows the changes in relative point
+    //call on point2.getworld position https://developers.google.com/sceneform/reference/com/google/ar/sceneform/Node#worldToLocalPoint(com.google.ar.sceneform.math.Vector3)
     public static void directionToVoice(Node pointOne, Node pointTwo) {
 
         //Difference vector
+        //change point1 to local position
         Vector3 point1 = pointOne.getWorldPosition();
         Vector3 point2 = pointTwo.getWorldPosition();
         Vector3 difference = Vector3.subtract(point2, point1);
 
         //-Z axis vector
         Camera arCamera = arFragment.getArSceneView().getScene().getCamera();
+        Vector3 relativePoint = arCamera.worldToLocalPoint(point1);
         Vector3 cameraPos = arCamera.getWorldPosition();
         Vector3 cameraForward = Vector3.add(cameraPos, arCamera.getForward().normalized());
         Vector3 frontFaceZ = Vector3.subtract(cameraForward, cameraPos);
@@ -233,21 +247,25 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                                                 Math.pow(difference.y, 2) +
                                                 Math.pow(difference.z, 2))))));
 
-        if ((point2.y - point1.y) > 0.01) {
+
+        //not the best for x and z, but works for y
+        //device coordinates not world coordinates
+        //get from the local coordinate system and not the world coordinate system (world coordinate system is not that meaningful for x and z)
+        if ((point2.y - point1.y) > 0.1) {
             speakOut("go upstairs");
             System.out.println("bananas go upstairs");
-        } else if ((point2.y - point1.y) < -0.01) {
+        } else if ((point2.y - point1.y) < -0.1) {
             speakOut("go downstairs");
             System.out.println("bananas go downstairs");
         } else {
-            if ((point2.z - point1.z) >= 0.03) {
+            if ((point2.z - point1.z) >= 0.3) {
                 speakOut("turn around");
                 System.out.println("bananas turn around");
             } else {
-                if ((point2.x - point1.x) <= -0.01) {
+                if ((point2.x - point1.x) <= -0.1) {
                     speakOut("turn left");
                     System.out.println("bananas turn left");
-                } else if ((point2.x - point1.x) >= 0.01) {
+                } else if ((point2.x - point1.x) >= 0.1) {
                     speakOut("turn right");
                     System.out.println("bananas turn right");
                 } else {

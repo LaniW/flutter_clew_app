@@ -24,7 +24,6 @@ import com.google.ar.sceneform.ux.ArFragment;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Vector;
 
 public class SingleUseRouteActivity extends FragmentActivity implements TextToSpeech.OnInitListener {
 
@@ -126,12 +125,10 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
 
         ArrayList<Node> lineWaypoints = new ArrayList<>();
 
-        //simplifies the paths (only creates line segments, not actual waypoints) [try removing the for loop]
-        for (Node nn : coordinatesList) {
-            rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, lineWaypoints);
-        }
+        //simplifies the paths (only creates points in line segments, not actual waypoints)
+        rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, lineWaypoints);
 
-        //the notable waypoints (points distinguished from the line segments)
+        //the notable points (points distinguished from the line segments (waypoints))
         ArrayList<Node> pathWaypoints = new ArrayList<>();
         for (Node n4 : coordinatesList) {
             if (!lineWaypoints.contains(n4)) {
@@ -139,12 +136,13 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             }
         }
 
-        //The path waypoints arraylist is 436 nodes long? (when run) but only had a couple of nodes displayed
+        /*
         for (int l = 0; l < coordinatesList.size() - pathWaypoints.size(); l++) {
             directionToVoice(pathWaypoints.get(l), pathWaypoints.get(l + 1));
         }
-        //call on the first waypoint
+        //TODO: call on the first waypoint
         //if the distance ~= 0
+         */
 
         //SAFE DELETE (sets all nodes to a single parent node but also renders it)
         Frame frame2 = arFragment.getArSceneView().getArFrame();
@@ -200,26 +198,29 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         }
     }
 
-    //world to local point (should only take in the next waypoint you are trying to get to)
     //boolean check true or false if point should be checked off
-    //relative point replace pt1
-    //assume user holds phone upright
     //once you find the relative point you can convert to spherical coordinates
     // if y is +- check what direction you have to go in
     //print relative pt
     //draw diagram that shows the changes in relative point
-    //call on point2.getworld position https://developers.google.com/sceneform/reference/com/google/ar/sceneform/Node#worldToLocalPoint(com.google.ar.sceneform.math.Vector3)
-    public static void directionToVoice(Node pointOne, Node pointTwo) {
+
+    //TODO: edit this method
+
+    /*
+    //Takes in the next waypoint you are trying to get to
+    //assume the user holds the phone upright
+     */
+    public static boolean directionToVoice(Node point) {
+
+        Camera arCamera = arFragment.getArSceneView().getScene().getCamera();
 
         //Difference vector
-        //change point1 to local position
-        Vector3 point1 = pointOne.getWorldPosition();
-        Vector3 point2 = pointTwo.getWorldPosition();
-        Vector3 difference = Vector3.subtract(point2, point1);
+        Vector3 nextPoint = point.getWorldPosition();
+        Vector3 relativePoint = arCamera.worldToLocalPoint(nextPoint);
+        Vector3 cameraWorld = arCamera.getWorldPosition();
+        Vector3 difference = Vector3.subtract(relativePoint, cameraWorld);
 
         //-Z axis vector
-        Camera arCamera = arFragment.getArSceneView().getScene().getCamera();
-        Vector3 relativePoint = arCamera.worldToLocalPoint(point1);
         Vector3 cameraPos = arCamera.getWorldPosition();
         Vector3 cameraForward = Vector3.add(cameraPos, arCamera.getForward().normalized());
         Vector3 frontFaceZ = Vector3.subtract(cameraForward, cameraPos);
@@ -251,33 +252,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         //not the best for x and z, but works for y
         //device coordinates not world coordinates
         //get from the local coordinate system and not the world coordinate system (world coordinate system is not that meaningful for x and z)
-        if ((point2.y - point1.y) > 0.1) {
-            speakOut("go upstairs");
-            System.out.println("bananas go upstairs");
-        } else if ((point2.y - point1.y) < -0.1) {
-            speakOut("go downstairs");
-            System.out.println("bananas go downstairs");
-        } else {
-            if ((point2.z - point1.z) >= 0.3) {
-                speakOut("turn around");
-                System.out.println("bananas turn around");
-            } else {
-                if ((point2.x - point1.x) <= -0.1) {
-                    speakOut("turn left");
-                    System.out.println("bananas turn left");
-                } else if ((point2.x - point1.x) >= 0.1) {
-                    speakOut("turn right");
-                    System.out.println("bananas turn right");
-                } else {
-                    speakOut("go forwards");
-                    System.out.println("bananas go forwards");
-                }
-            }
-        }
-
-        System.out.println("bananas x: " + (point2.x - point1.x));
-        System.out.println("bananas y: " + (point2.y - point1.y));
-        System.out.println("bananas z: " + (point2.z - point1.z));
+        return true; //replace when finished
     }
 
     @Override

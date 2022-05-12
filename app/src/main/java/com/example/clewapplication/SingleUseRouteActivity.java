@@ -212,8 +212,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         Camera arCamera = arFragment.getArSceneView().getScene().getCamera();
 
         //Difference vector
-        Vector3 nextPoint = point.getWorldPosition();
-        Vector3 relativePoint = arCamera.worldToLocalPoint(nextPoint);
+        Vector3 relativePoint = arCamera.worldToLocalPoint(point.getWorldPosition());
         Vector3 cameraWorld = arCamera.getWorldPosition();
         Vector3 difference = Vector3.subtract(relativePoint, cameraWorld);
 

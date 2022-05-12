@@ -140,6 +140,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         for (int l = 0; l < coordinatesList.size() - pathWaypoints.size(); l++) {
             directionToVoice(pathWaypoints.get(l), pathWaypoints.get(l + 1));
         }
+            //print relative pt
         //TODO: call on the first waypoint
         //if the distance ~= 0
          */
@@ -198,12 +199,8 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         }
     }
 
-    //boolean check true or false if point should be checked off
     //once you find the relative point you can convert to spherical coordinates
-    // if y is +- check what direction you have to go in
-    //print relative pt
     //draw diagram that shows the changes in relative point
-
     //TODO: edit this method
 
     /*
@@ -248,10 +245,11 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                                                 Math.pow(difference.y, 2) +
                                                 Math.pow(difference.z, 2))))));
 
-
+        // if y is +- check what direction you have to go in
         //not the best for x and z, but works for y
         //device coordinates not world coordinates
         //get from the local coordinate system and not the world coordinate system (world coordinate system is not that meaningful for x and z)
+        //boolean check true or false if point should be checked off
         return true; //replace when finished
     }
 

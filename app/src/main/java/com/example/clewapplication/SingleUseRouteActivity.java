@@ -25,6 +25,7 @@ import com.google.ar.sceneform.ux.ArFragment;
 import java.util.ArrayList;
 import java.util.Objects;
 
+//use git push in terminal to commit changes for now on
 public class SingleUseRouteActivity extends FragmentActivity implements TextToSpeech.OnInitListener {
 
     private static final String TAG = SingleUseRouteActivity.class.getSimpleName();
@@ -213,8 +214,8 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
 
         //Difference vector
         Vector3 relativePoint = arCamera.worldToLocalPoint(point.getWorldPosition());
-        Vector3 cameraWorld = arCamera.getWorldPosition();
-        Vector3 difference = Vector3.subtract(relativePoint, cameraWorld);
+        Vector3 cameraLocal = arCamera.worldToLocalPoint(arCamera.getWorldPosition());
+        Vector3 difference = Vector3.subtract(relativePoint, cameraLocal);
 
         //-Z axis vector
         Vector3 cameraPos = arCamera.getWorldPosition();
@@ -247,7 +248,6 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         // if y is +- check what direction you have to go in
         //not the best for x and z, but works for y
         //device coordinates not world coordinates
-        //get from the local coordinate system and not the world coordinate system (world coordinate system is not that meaningful for x and z)
         //boolean check true or false if point should be checked off
         return true; //replace when finished
     }

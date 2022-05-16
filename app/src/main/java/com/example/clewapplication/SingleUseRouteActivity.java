@@ -137,14 +137,22 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             }
         }
 
-        /*
-        for (int l = 0; l < coordinatesList.size() - pathWaypoints.size(); l++) {
-            directionToVoice(pathWaypoints.get(l), pathWaypoints.get(l + 1));
+        ArrayList<Node> mainWaypoints = new ArrayList<>();
+        for(Node n8: coordinatesList) {
+            if(lineWaypoints.contains(n8)){
+                mainWaypoints.add(n8);
+            }
         }
-            //print relative pt
+
+        System.out.println("ABCWaypoints: " + mainWaypoints.size());
+
+        for (int l = 0; l < coordinatesList.size() - pathWaypoints.size(); l++) {
+            while(!directionToVoice(pathWaypoints.get(l))){
+                directionToVoice(pathWaypoints.get(l));
+            }
+        }
+        //print relative pt
         //TODO: call on the first waypoint
-        //if the distance ~= 0
-         */
 
         //SAFE DELETE (sets all nodes to a single parent node but also renders it)
         Frame frame2 = arFragment.getArSceneView().getArFrame();
@@ -203,12 +211,12 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
     //once you find the relative point you can convert to spherical coordinates
     //draw diagram that shows the changes in relative point
     //TODO: edit this method
-
     /*
     //Takes in the next waypoint you are trying to get to
     //assume the user holds the phone upright
      */
     public static boolean directionToVoice(Node point) {
+        boolean doNotCheckOff = true;
 
         Camera arCamera = arFragment.getArSceneView().getScene().getCamera();
 
@@ -245,11 +253,15 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                                                 Math.pow(difference.y, 2) +
                                                 Math.pow(difference.z, 2))))));
 
-        // if y is +- check what direction you have to go in
-        //not the best for x and z, but works for y
+        // if y is +- check what direction you have to go in, not the best for x and z, but works for y
         //device coordinates not world coordinates
         //boolean check true or false if point should be checked off
-        return true; //replace when finished
+        if(distance <= 0.01){
+            speakOut("next point");
+            doNotCheckOff = false;
+        }
+
+        return doNotCheckOff;
     }
 
     @Override

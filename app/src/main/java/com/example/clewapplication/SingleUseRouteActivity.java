@@ -42,6 +42,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
     private boolean bVoice = false;
     private Node newCrumb = new Node();
     private final ArrayList<Node> coordinatesList = new ArrayList<>();
+    private final ArrayList<Node> shortList = new ArrayList<>();
     private static TextToSpeech tts = null;
 
     @Override
@@ -88,6 +89,19 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
 
         } else if ((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStop && bVoice){
             recursivePath();
+            int j = shortList.size() - 1;
+            boolean a = true;
+            boolean b;
+
+            while(j >= 0){
+                while(a){
+                    b = directionToVoice(shortList.get(j));
+                    if(b){
+                        a = false;
+                       }
+                    }
+                j--;
+            }
         }
     }
 
@@ -185,6 +199,12 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             }
         }
 
+        for(Node n8 : coordinatesList){
+            if(lineWaypoints.contains(n8)){
+                shortList.add(n8);
+            }
+        }
+
         //SAFE DELETE (sets all nodes to a single parent node but also renders it)
         Frame frame2 = arFragment.getArSceneView().getArFrame();
         assert frame2 != null;
@@ -200,29 +220,38 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
 
     //once you find the relative point you can convert to spherical coordinates
     //draw diagram that shows the changes in relative point
-    //TODO: edit this method
     /*
     //Takes in the next waypoint you are trying to get to
     //assume the user holds the phone upright
+    //print relative pt
+    // if y is +- check what direction you have to go in, not the best for x and z, but works for y
+    //device coordinates not world coordinates
+    //boolean check true or false if point should be checked off
      */
     public static boolean directionToVoice(Node point) {
 
-        /*
-                ArrayList<Node> mainWaypoints = new ArrayList<>();
-        for(Node n8: coordinatesList) {
-            if(lineWaypoints.contains(n8)){
-                mainWaypoints.add(n8);
-            }
-        }
-
-        System.out.println("ABCWaypoints: " + mainWaypoints.size());
-         */
-
-        //print relative pt
-        boolean doNotCheckOff = true;
-
+        boolean checkOff = false;
         Frame frame = arFragment.getArSceneView().getArFrame();
         Camera arCamera = arFragment.getArSceneView().getScene().getCamera();
+
+        assert frame != null;
+        Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
+        Anchor anchor = Objects.requireNonNull(arFragment.getArSceneView().getSession()).createAnchor(pos);
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        anchorNode.setParent(arFragment.getArSceneView().getScene());
+
+        Node cameraPosNode = new Node();
+        cameraPosNode.setParent(anchorNode);
+
+        float dx = point.getLocalPosition().x - cameraPosNode.getLocalPosition().x;
+        float dy = point.getLocalPosition().y - cameraPosNode.getLocalPosition().y;
+        float dz = point.getLocalPosition().z - cameraPosNode.getLocalPosition().z;
+        float distanceMeters = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+        if(distanceMeters <= 0.3){
+            speakOut("next node");
+            checkOff = true;
+        }
 
         //Difference vector
         Vector3 relativePoint = arCamera.worldToLocalPoint(point.getWorldPosition());
@@ -257,29 +286,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                                                 Math.pow(difference.y, 2) +
                                                 Math.pow(difference.z, 2))))));
 
-        // if y is +- check what direction you have to go in, not the best for x and z, but works for y
-        //device coordinates not world coordinates
-        //boolean check true or false if point should be checked off
-        assert frame != null;
-        Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
-        Anchor anchor = Objects.requireNonNull(arFragment.getArSceneView().getSession()).createAnchor(pos);
-        AnchorNode anchorNode = new AnchorNode(anchor);
-        anchorNode.setParent(arFragment.getArSceneView().getScene());
-
-        Node cameraPosNode = new Node();
-        cameraPosNode.setParent(anchorNode);
-
-        float dx = point.getLocalPosition().x - cameraPosNode.getLocalPosition().x;
-        float dy = point.getLocalPosition().y - cameraPosNode.getLocalPosition().y;
-        float dz = point.getLocalPosition().z - cameraPosNode.getLocalPosition().z;
-        float distanceMeters = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-        if(distanceMeters < 0.3){
-            speakOut("next node");
-            doNotCheckOff = false;
-        }
-
-        return doNotCheckOff;
+        return checkOff;
     }
 
     @Override

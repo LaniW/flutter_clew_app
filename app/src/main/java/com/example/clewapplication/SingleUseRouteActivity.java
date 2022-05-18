@@ -37,7 +37,9 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
     private ModelRenderable modelRenderable;
     private boolean b = true;
     private boolean buttonStart = false;
+    private boolean buttonStop = false;
     private boolean bPath = true;
+    private boolean bVoice = false;
     private Node newCrumb = new Node();
     private final ArrayList<Node> coordinatesList = new ArrayList<>();
     private static TextToSpeech tts = null;
@@ -84,9 +86,22 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         if ((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
             path(bPath);
 
-        } else {
-            bPath = false;
+        } else if ((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStop && bVoice){
+            recursivePath();
         }
+    }
+
+    public void setTrue(View view) {
+        buttonStart = true;
+        buttonStop = false;
+        bPath = true;
+    }
+
+    public void setFalse(View view) {
+        buttonStart = false;
+        buttonStop = true;
+        bPath = false;
+        bVoice = true;
     }
 
     public void path(boolean bPath) {
@@ -112,58 +127,6 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                 coordinatesList.add(crumb);
                 b = false;
             }
-        }
-    }
-
-    public void setTrue(View view) {
-        buttonStart = true;
-        bPath = true;
-    }
-
-    public void setFalse(View view) {
-        buttonStart = false;
-        bPath = false;
-
-        ArrayList<Node> lineWaypoints = new ArrayList<>();
-
-        //simplifies the paths (only creates points in line segments, not actual waypoints)
-        rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, lineWaypoints);
-
-        //the notable points (points distinguished from the line segments (waypoints))
-        ArrayList<Node> pathWaypoints = new ArrayList<>();
-        for (Node n4 : coordinatesList) {
-            if (!lineWaypoints.contains(n4)) {
-                pathWaypoints.add(n4);
-            }
-        }
-
-        ArrayList<Node> mainWaypoints = new ArrayList<>();
-        for(Node n8: coordinatesList) {
-            if(lineWaypoints.contains(n8)){
-                mainWaypoints.add(n8);
-            }
-        }
-
-        System.out.println("ABCWaypoints: " + mainWaypoints.size());
-
-        for (int l = 0; l < coordinatesList.size() - pathWaypoints.size(); l++) {
-            while(!directionToVoice(pathWaypoints.get(l))){
-                directionToVoice(pathWaypoints.get(l));
-            }
-        }
-        //print relative pt
-        //TODO: call on the first waypoint
-
-        //SAFE DELETE (sets all nodes to a single parent node but also renders it)
-        Frame frame2 = arFragment.getArSceneView().getArFrame();
-        assert frame2 != null;
-        Pose pos = frame2.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
-        Anchor anchor2 = Objects.requireNonNull(arFragment.getArSceneView().getSession()).createAnchor(pos);
-        AnchorNode anchorNode2 = new AnchorNode(anchor2);
-        anchorNode2.setParent(arFragment.getArSceneView().getScene());
-        for (Node nnn : pathWaypoints) {
-            nnn.setParent(anchorNode2);
-            nnn.setRenderable(modelRenderable);
         }
     }
 
@@ -208,6 +171,33 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         }
     }
 
+    public void recursivePath(){
+        ArrayList<Node> lineWaypoints = new ArrayList<>();
+
+        //simplifies the paths (only creates points in line segments, not actual waypoints)
+        rdp(coordinatesList, 0, coordinatesList.size(), 0.5f, lineWaypoints);
+
+        //the notable points (points distinguished from the line segments (waypoints))
+        ArrayList<Node> pathWaypoints = new ArrayList<>();
+        for (Node n4 : coordinatesList) {
+            if (!lineWaypoints.contains(n4)) {
+                pathWaypoints.add(n4);
+            }
+        }
+
+        //SAFE DELETE (sets all nodes to a single parent node but also renders it)
+        Frame frame2 = arFragment.getArSceneView().getArFrame();
+        assert frame2 != null;
+        Pose pos = frame2.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
+        Anchor anchor2 = Objects.requireNonNull(arFragment.getArSceneView().getSession()).createAnchor(pos);
+        AnchorNode anchorNode2 = new AnchorNode(anchor2);
+        anchorNode2.setParent(arFragment.getArSceneView().getScene());
+        for (Node nnn : pathWaypoints) {
+            nnn.setParent(anchorNode2);
+            nnn.setRenderable(modelRenderable);
+        }
+    }
+
     //once you find the relative point you can convert to spherical coordinates
     //draw diagram that shows the changes in relative point
     //TODO: edit this method
@@ -216,8 +206,22 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
     //assume the user holds the phone upright
      */
     public static boolean directionToVoice(Node point) {
+
+        /*
+                ArrayList<Node> mainWaypoints = new ArrayList<>();
+        for(Node n8: coordinatesList) {
+            if(lineWaypoints.contains(n8)){
+                mainWaypoints.add(n8);
+            }
+        }
+
+        System.out.println("ABCWaypoints: " + mainWaypoints.size());
+         */
+
+        //print relative pt
         boolean doNotCheckOff = true;
 
+        Frame frame = arFragment.getArSceneView().getArFrame();
         Camera arCamera = arFragment.getArSceneView().getScene().getCamera();
 
         //Difference vector
@@ -256,8 +260,22 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
         // if y is +- check what direction you have to go in, not the best for x and z, but works for y
         //device coordinates not world coordinates
         //boolean check true or false if point should be checked off
-        if(distance <= 0.01){
-            speakOut("next point");
+        assert frame != null;
+        Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
+        Anchor anchor = Objects.requireNonNull(arFragment.getArSceneView().getSession()).createAnchor(pos);
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        anchorNode.setParent(arFragment.getArSceneView().getScene());
+
+        Node cameraPosNode = new Node();
+        cameraPosNode.setParent(anchorNode);
+
+        float dx = point.getLocalPosition().x - cameraPosNode.getLocalPosition().x;
+        float dy = point.getLocalPosition().y - cameraPosNode.getLocalPosition().y;
+        float dz = point.getLocalPosition().z - cameraPosNode.getLocalPosition().z;
+        float distanceMeters = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+        if(distanceMeters < 0.3){
+            speakOut("next node");
             doNotCheckOff = false;
         }
 

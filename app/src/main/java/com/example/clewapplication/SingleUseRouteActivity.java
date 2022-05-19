@@ -42,7 +42,7 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
     private boolean bVoice = false;
     private Node newCrumb = new Node();
     private final ArrayList<Node> coordinatesList = new ArrayList<>();
-    private final ArrayList<Node> shortList = new ArrayList<>();
+    private ArrayList<Node> longList = new ArrayList<>();
     private static TextToSpeech tts = null;
 
     @Override
@@ -86,21 +86,14 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
 
         if ((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStart) {
             path(bPath);
-
         } else if ((frame.getCamera().getTrackingState() == TrackingState.TRACKING) && buttonStop && bVoice){
             recursivePath();
-            int j = shortList.size() - 1;
-            boolean a = true;
-            boolean b;
-
-            while(j >= 0){
-                while(a){
-                    b = directionToVoice(shortList.get(j));
-                    if(b){
-                        a = false;
-                       }
-                    }
-                j--;
+            boolean ab;
+            for(int i = longList.size() - 1; i > 0; i--){
+                ab = directionToVoice(longList.get(i));
+                if(ab){
+                    i--;
+                }
             }
         }
     }
@@ -199,13 +192,10 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             }
         }
 
-        for(Node n8 : coordinatesList){
-            if(lineWaypoints.contains(n8)){
-                shortList.add(n8);
-            }
-        }
+        longList = pathWaypoints;
 
         //SAFE DELETE (sets all nodes to a single parent node but also renders it)
+        /*
         Frame frame2 = arFragment.getArSceneView().getArFrame();
         assert frame2 != null;
         Pose pos = frame2.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
@@ -216,40 +206,30 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
             nnn.setParent(anchorNode2);
             nnn.setRenderable(modelRenderable);
         }
+         */
     }
 
-    //once you find the relative point you can convert to spherical coordinates
-    //draw diagram that shows the changes in relative point
-    /*
     //Takes in the next waypoint you are trying to get to
     //assume the user holds the phone upright
-    //print relative pt
-    // if y is +- check what direction you have to go in, not the best for x and z, but works for y
-    //device coordinates not world coordinates
-    //boolean check true or false if point should be checked off
-     */
     public static boolean directionToVoice(Node point) {
 
         boolean checkOff = false;
-        Frame frame = arFragment.getArSceneView().getArFrame();
+        Frame frame2 = arFragment.getArSceneView().getArFrame();
         Camera arCamera = arFragment.getArSceneView().getScene().getCamera();
-
-        assert frame != null;
-        Pose pos = frame.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
-        Anchor anchor = Objects.requireNonNull(arFragment.getArSceneView().getSession()).createAnchor(pos);
+        assert frame2 != null;
+        Pose cameraPose = frame2.getCamera().getPose().compose(Pose.makeTranslation(0, 0, 0));
+        Anchor anchor = Objects.requireNonNull(arFragment.getArSceneView().getSession()).createAnchor(cameraPose);
         AnchorNode anchorNode = new AnchorNode(anchor);
         anchorNode.setParent(arFragment.getArSceneView().getScene());
+        Node trackCrumb = new Node();
+        trackCrumb.setParent(anchorNode);
 
-        Node cameraPosNode = new Node();
-        cameraPosNode.setParent(anchorNode);
+        assert point.getParent() != null;
+        double distanceValue = Math.sqrt((trackCrumb.getWorldPosition().x - point.getLocalPosition().x) * (trackCrumb.getWorldPosition().x - point.getLocalPosition().x) + (trackCrumb.getWorldPosition().y - point.getLocalPosition().y) * (trackCrumb.getWorldPosition().y - point.getLocalPosition().y) + (trackCrumb.getWorldPosition().z - point.getLocalPosition().z) * (trackCrumb.getWorldPosition().z - point.getLocalPosition().z));
 
-        float dx = point.getLocalPosition().x - cameraPosNode.getLocalPosition().x;
-        float dy = point.getLocalPosition().y - cameraPosNode.getLocalPosition().y;
-        float dz = point.getLocalPosition().z - cameraPosNode.getLocalPosition().z;
-        float distanceMeters = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-        if(distanceMeters <= 0.3){
-            speakOut("next node");
+        System.out.println("ABC: " + distanceValue);
+        if (distanceValue <= 0.3) {
+            speakOut("Next point");
             checkOff = true;
         }
 
@@ -285,7 +265,6 @@ public class SingleUseRouteActivity extends FragmentActivity implements TextToSp
                                         Math.pow(difference.x, 2) +
                                                 Math.pow(difference.y, 2) +
                                                 Math.pow(difference.z, 2))))));
-
         return checkOff;
     }
 
